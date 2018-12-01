@@ -1,0 +1,168 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_List.cshtml";
+}
+
+@section toolbar{
+    @*<a id="downloadTemplate" class="easyui-linkbutton" data-options="iconCls:'icon-excel'">下载导入模板</a>*@
+}
+<form id="dataForm" enctype="multipart/form-data" class="easyui-form" method="post" data-options="novalidate:true">
+    <table class="table_base">
+        <colgroup>
+            <col style="width:80px;" />
+        </colgroup>
+        <tbody>
+            <tr>
+                <th>文件</th>
+                <td>
+                    <input style="display:none" name="files" id="file" type="file" accept="*">
+                    <input id="file-display" class="easyui-textbox" data-options="width:'200px',required:true">
+                    <label for="file" class="easyui-linkbutton" data-options="iconCls:'icon-add'">选择文件</label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<div style="display: none;">
+    <script type="text/template" id="AttachmentItemTemplate">
+        <tr>
+
+            <td>
+                {$if (IsWebImage(fileName))}
+                <a href="javascript:void(0)" onclick="SetArticleImage('${thumb}');return false;"><img src="${thumb}"  /></a>
+                {$else}
+                <span>&nbsp;</span>
+                {$/if}
+            </td>
+            <td>
+                <p> <a class="imgdata" href="${path}" data-dir="${directory}" data-name="${fileName}" data-thumb="${thumb}" target="_blank">${fileName}</a></p>
+                {$if (IsWebImage(fileName))}
+                <p>  <a href="javascript:void(0)" onclick="SetArticleImage('${thumb}');return false;">[设为文章缩略图]</a></p>
+                {$/if}
+                <p> <a href="javascript:void(0)" onclick="InsertAttachmentToEditor('txtContent', '${fileName}', '${fileExt}', '${path}');return false;">[插入正文]</a></p>
+                <p> <a href="javascript:void(0)" onclick="DeleteAttachment(${articleId},'${directory}');return false;">[删除]</a></p>
+            </td>
+        </tr>
+    </script>
+</div>
+@section foottoolbar{
+    <a id="saveForm" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-save'">上传</a>
+}
+<script src="~/Scripts/juicer.js"></script>
+<script>
+    var articleId =@ViewBag.ArticleId  ;
+
+    /*是否图片*/
+    function IsWebImage(fileName) {
+        var dotPos = fileName.lastIndexOf('.');
+        if (dotPos > 0) {
+            var ext = fileName.substr(dotPos);
+            ext = ext.toLowerCase();
+            if (
+                ext == '.jpg' ||
+                ext == '.png' ||
+                ext == '.gif' ||
+                ext == '.bmp' ||
+                ext == '.ico' ||
+                ext == '.jpeg'
+            ) {
+                return true;
+            }
+            return false;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    $(function () {
+
+        //juicer组件注册
+        if (typeof (juicer) != 'undefined') {
+            $(function () {
+                //自定义juicer的操作符避免与Razor语法的冲突
+                juicer.set({
+                    'tag::operationOpen': '{$',
+                    'tag::operationClose': '}',
+                    'tag::interpolateOpen': '${',
+                    'tag::interpolateClose': '}',
+                    'tag::noneencodeOpen': '$${',
+                    'tag::noneencodeClose': '}',
+                    'tag::commentOpen': '{#',
+                    'tag::commentClose': '}'
+                });
+            });
+            // var JSON={};
+            //juicer.register('JsonToString', JSON.stringify);
+            //juicer.register('StringToJson', $.parseJSON);
+            //juicer.register('TagKeywords', lib51.tagKeywords);
+            //juicer.register('GetDateTime', lib51.getDateTime);
+            //juicer.register('GetDateTimeString', lib51.getDateTimeString);
+            juicer.register('IsWebImage', IsWebImage);
+        }
+        document.getElementById('file').onchange = function () {
+            $('#file').getFileBase64(function (base64, fileName) {
+                $('#file-display').textbox('setValue', fileName);
+            });
+        };
+
+        $('#saveForm').click(function () {
+            if (!$('#dataForm').form('enableValidation').form('validate'))
+                return;
+
+            var formValues = $('#dataForm').getValues();
+            loading();
+            var formData = new FormData($('#dataForm')[0]);
+            formData.append("articleId", articleId);
+
+            $.ajax({
+                url: '/AttachmentManage/Attachment/UploadFile',
+                data: formData,
+                type: "post",
+                processData: false,
+                contentType: false,
+                dataType: "json",
+                success: function (resJson) {
+                    if (resJson.Success) {
+                        parent.dialogMsg('上传成功!');
+                        var attach = resJson['Data'];
+                        var tmpl = $('#AttachmentItemTemplate').html();
+                        var html = juicer(tmpl, attach);
+                        parent.$('#AttachmentListContainer').append(html);
+                        var imgdatas = parent.$('#AttachmentListContainer').find('.imgdata');
+                        var attachments = "";
+                        var values = [];
+                        if (imgdatas.length > 0) {
+                            
+                            imgdatas.each(function (i,item) {
+                                var path = $(this).attr('href');
+                                var thumbpath = $(this).attr('data-thumb');
+                                var v = dir + '&' + path;;
+                                var dir = $(this).attr('data-dir');
+                                var name = $(this).attr('data-name');
+                                var v = dir + '&' + path + '&' + thumbpath + '&' + name;
+                                values.push(v);
+                            });
+                        }
+                        attachments = values.join(',')
+                        parent.$('#Attachments').val(attachments);
+                        parent.dialogClose('UploadFileForm');
+                    }
+                    else {
+                        dialogError(resJson.Msg);
+                    }
+                },
+                error: function () {
+                    //服务器连接失败
+                },
+                beforeSend: function () {//在success之前就进行了
+                    //操作
+                },
+                complete: function () {//在success之后就进行
+                    //操作
+                }
+            });
+
+
+        })
+    });</script>

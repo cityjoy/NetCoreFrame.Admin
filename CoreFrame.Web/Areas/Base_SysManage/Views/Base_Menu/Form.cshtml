@@ -1,0 +1,194 @@
+@using CoreFrame.Entity.MenuManage;
+@using CoreFrame.Util;
+
+@{
+    Layout = "~/Views/Shared/_Layout_List.cshtml";
+
+    var obj = (Menu)Model;
+    if (obj == null)
+    {
+        obj = new Menu();
+    }
+    var objStr = Html.Raw(obj.ToJson());
+}
+
+<form id="dataForm" enctype="multipart/form-data" class="easyui-form" method="post" data-options="novalidate:true">
+    <table class="table_base">
+        <colgroup>
+            <col style="width:80px;" />
+        </colgroup>
+        <tbody>
+
+            <tr>
+                <th>名称</th>
+                <td>
+                    <input name="Name" value="@obj.Name" class="easyui-textbox" data-options="width:'200px',required:true">
+                </td>
+            </tr>
+            <tr>
+                <th>菜单级别</th>
+                <td>
+                    <select id="MenuLevel" name="MenuLevel" class="easyui-combobox" data-options="width:100" onchange="alert(1)">
+                        <option value="1" @Html.Raw(string.IsNullOrEmpty(obj.MenuLevel) == true ? "selected ='selected'" : obj.MenuLevel == "1" ? "selected ='selected'" : "") ">1级</option>
+                        <option value="2" @Html.Raw(obj.MenuLevel == "2" ? "selected='selected'" : "")>2级</option>
+                        <option value="3" @Html.Raw(obj.MenuLevel == "3" ? "selected='selected'" : "")>3级</option>
+                    </select>
+                     
+                </td>
+            </tr>
+
+            <tr>
+                <th>父级菜单</th>
+                <td>
+                    <select id="ParentMenuId" name="ParentMenuId" class="easyui-combobox" data-options="width:100"></select>
+                </td>
+            </tr>
+            <tr>
+                <th>图标</th>
+                <td>
+                    <input name="Icon" value="@Html.Raw(obj.Id==0?"icon_menu_sys":obj.Icon)" class="easyui-textbox" data-options="width:'200px'">
+                </td>
+            </tr>
+            <tr>
+                <th>链接</th>
+                <td>
+                    <input name="Url" value="@obj.Url" class="easyui-textbox" data-options="width:'200px'">
+                </td>
+            </tr>
+                <tr >
+                    <th>模块值 </th>
+                    <td>
+                         
+                      <input  id="ModuleValue" name="ModuleValue" value="@obj.ModuleValue" class="easyui-textbox" data-options="width:'200px'" >
+                         
+                    </td>
+                </tr>
+                <tr @Html.Raw(obj.MenuLevel == "3"?"": "style='display:none'") class="permissiom">
+                    <th>是否显示查询权限</th>
+                    <td>
+                        <select class="easyui-combobox" name="IsShowSearchPermission" style="width:200px;">
+                            <option value="true" @Html.Raw(obj.IsShowSearchPermission == true ? "selected='selected'" : "")>是</option>
+                            <option value="false" @Html.Raw(obj.IsShowSearchPermission == false ? "selected='selected'" : "")>否</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr @Html.Raw(obj.MenuLevel == "3"?"": "style='display:none'") class="permissiom">
+                    <th>是否显示管理权限</th>
+                    <td>
+                        <select class="easyui-combobox" name="IsShowManagePermission" style="width:200px;">
+                            <option value="true" @Html.Raw(obj.IsShowManagePermission == true ? "selected='selected'" : "")>是</option>
+                            <option value="false" @Html.Raw(obj.IsShowManagePermission == false ? "selected='selected'" : "")>否</option>
+                        </select>
+                    </td>
+                </tr>
+        </tbody>
+    </table>
+</form>
+
+@section foottoolbar{
+    <a id="saveForm" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-save'">保存</a>
+}
+
+<script>
+    var rootUrl = '@Url.Content("~/")';
+    var theEntity = @objStr;
+    var parentMenuList = {};
+    $(function () {
+        if (theEntity.Id) {
+
+            var menuLevel = $('#MenuLevel').combobox("getValue") - 1;//选中的值
+            var parentMenuId = theEntity.ParentMenuId
+            var parentName = "";
+            $.getJSON(rootUrl + 'Base_SysManage/Base_Menu/GetMenuLevel', { menuLevel: menuLevel }, function (resJson) {
+                if (resJson) {
+
+                    for (var j = 0; j < resJson.length; j++) {
+                        if (resJson[j].Id == parentMenuId) {
+                            parentName = resJson[j].Nsme;
+                        }
+                    }
+
+                    $("#ParentMenuId").combobox({
+                        data: resJson,
+                        valueField: 'Id',
+                        textField: 'Name',
+                        onloadSuccess: function () {
+                        }
+                    }).combobox('select', parentMenuId, parentName);
+
+                }
+                else {
+                    $("#ParentMenuId").combobox({
+                        data: {Id:0,Name:'--'},
+                        valueField: 'Id',
+                        textField: 'Name',
+                        
+                    }) 
+                }
+            });
+        }
+        else {
+            $('#ParentMenuId').combobox('select', '--','--');
+
+        }
+        $("#MenuLevel").combobox({
+            onChange: function (n, o) {
+                var MenuLevel = $('#MenuLevel').combobox("getValue") - 1;//选中的值
+ 
+                    if (MenuLevel == 2) {
+                        $('.permissiom').show();
+                    }
+                    else {
+                        $('.permissiom').hide();
+
+                    }
+                   $.getJSON(rootUrl + 'Base_SysManage/Base_Menu/GetMenuLevel', { menuLevel: MenuLevel }, function (resJson) {
+                    parentMenuList = resJson;
+                    $('#ParentMenuId').combobox({
+                        data: resJson,
+                        valueField: 'Id',
+                        textField: 'Name'
+                    });
+                });
+               
+                if (MenuLevel == "0") {
+                    $('#ParentMenuId').combobox('select', '--');
+
+                }
+
+            }
+
+        });
+
+        $("#ParentMenuId").combobox({
+            onChange: function (n, o) {
+                var parentMenuId = $('#ParentMenuId').combobox("getValue");//选中的值
+                $.each(parentMenuList, function (n, value) {
+                    if (value.Id == parentMenuId) {
+                        alert(value.ModuleValue);
+                        $('#ModuleValue').textbox('setValue', value.ModuleValue);
+                    }
+                });
+            }
+
+        });
+
+        $('#saveForm').click(function () {
+            if (!$('#dataForm').form('enableValidation').form('validate'))
+                return;
+
+            var formValues = $('#dataForm').getValues();
+            $.extend(theEntity, formValues);
+            $.postJSON(rootUrl + 'Base_SysManage/Base_Menu/SaveData', theEntity, function (resJson) {
+                if (resJson.Success) {
+                    parent.dialogMsg('保存成功!');
+                    parent.$('#dataTable').datagrid('reload');
+                    parent.dialogClose('form');
+                }
+                else {
+                    dialogError(resJson.Msg);
+                }
+            });
+        });
+    });
+</script>

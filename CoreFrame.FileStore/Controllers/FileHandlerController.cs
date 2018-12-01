@@ -1,0 +1,164 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using CoreFrame.Util;
+using System.IO;
+using System.Drawing.Imaging;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using CoreFrame.FileStore.Filter;
+namespace CoreFrame.FileStore.Controllers
+{
+    [AuthenticationFilter]
+    public class FileHandlerController : Controller
+    {
+        private readonly IHostingEnvironment _hostingEnvironment;
+        public FileHandlerController(IHostingEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
+        public ActionResult Index()
+        {
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            string contentRootPath = _hostingEnvironment.ContentRootPath;
+
+            return Content(webRootPath + "\n" + contentRootPath);
+        }
+
+        [HttpPost]
+        public JsonResult UploadArticelFile(IFormFile attachFile, int articleId = 0)
+        {
+            PageActionResult operateResult = new PageActionResult();
+
+            try
+            {
+                string time = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string fileDir = Path.Combine("wwwroot", "Upload", "File", "Article", time);
+                if (!Directory.Exists(fileDir))
+                    Directory.CreateDirectory(fileDir);
+                string filePath = Path.Combine(fileDir, attachFile.FileName);
+                string fileExt = Path.GetExtension(attachFile.FileName);
+                using (var stream = new FileStream(filePath, FileMode.CreateNew))
+                {
+                    attachFile.CopyTo(stream);
+                }
+                if (ImageHelper.IsWebImage(attachFile.FileName))
+                {
+                    string thumbConfig = "340x200";
+                    ImageFormat imgFormat;
+                    #region 图片格式
+                    if (string.Compare(fileExt, ".jpg", true) == 0 || string.Compare(fileExt, ".jpeg", true) == 0)
+                    {
+                        imgFormat = ImageFormat.Jpeg;
+                    }
+                    else if (string.Compare(fileExt, ".gif", true) == 0)
+                    {
+                        imgFormat = ImageFormat.Gif;
+                    }
+                    else if (string.Compare(fileExt, ".bmp", true) == 0)
+                    {
+                        imgFormat = ImageFormat.Bmp;
+                    }
+                    else if (string.Compare(fileExt, ".ico", true) == 0)
+                    {
+                        imgFormat = ImageFormat.Icon;
+                    }
+                    else
+                    {
+                        imgFormat = ImageFormat.Png;
+                    }
+                    #endregion
+                    #region 生成缩略图
+
+                    string[] thumbConfigSizes = thumbConfig.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string thumbConfigSize in thumbConfigSizes)
+                    {
+                        try
+                        {
+                            string[] thumbSizeInfo = thumbConfigSize.Split(new string[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
+                            if (thumbSizeInfo.Length < 2)
+                            {
+                                continue;
+                            }
+                            int width = XConvert.ToInt32(thumbSizeInfo[0], 0);
+                            int height = XConvert.ToInt32(thumbSizeInfo[1], 0);
+                            if (width <= 0 || height <= 0)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                string thumbSavePath = FileStoreUtil.GenerateThumbnailSavePath(filePath, width, height);
+                                ImageHelper.BuildThumbnail(filePath, thumbSavePath, imgFormat, width, height, false);
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            LogHelper.WriteLog_LocalTxt(ex.ToJson());
+                        }
+                    }
+
+                    #endregion
+                }
+
+                operateResult.Result = PageActionResultType.Success;
+
+                operateResult.Data = new
+                {
+                    articleId,
+                    attachFile.FileName,
+                    FileExt = fileExt,
+                    Path = Vars.FILESTORE_SITE + "/Upload/File/Article/" + time + @"/" + attachFile.FileName,
+                    Thumb = Vars.FILESTORE_SITE + "/Upload/File/Article/" + time + @"/thumbs_" + Path.GetFileNameWithoutExtension(attachFile.FileName) + @"/340_200" + fileExt,
+                    Directory = time//文件所在目录
+                };
+                operateResult.Message = "上传成功";
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog_LocalTxt(ex.ToJson());
+                operateResult.Result = PageActionResultType.Failed;
+                operateResult.Message = "上传失败";
+            }
+            return Json(operateResult);
+        }
+        
+
+        /// <summary>
+        /// 删除文章文件
+        /// </summary>
+        /// <param name="savePath">文件夹</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult DeleteArticelFile(string savePath)
+        {
+            PageActionResult operateResult = new PageActionResult();
+
+            try
+            {
+                string saveDirPath = Path.Combine(_hostingEnvironment.WebRootPath, "Upload", "File", "Article", savePath);
+
+                if (Directory.Exists(saveDirPath))
+                    Directory.Delete(saveDirPath, true);
+                operateResult.Result = PageActionResultType.Success;
+                operateResult.Message = "删除成功";
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog_LocalTxt(ex.ToJson());
+                operateResult.Result = PageActionResultType.Failed;
+                operateResult.Message = "删除失败";
+            }
+
+            return Json(operateResult);
+
+        }
+
+
+    }
+}
