@@ -98,8 +98,8 @@ namespace CoreFrame.Business.Base_SysManage
         private void BuildEntity(List<TableInfo> tableInfo, string areaName, string tableName)
         {
             string entityPath = _contentRootPath.Replace("CoreFrame.Web", "CoreFrame.Entity");
-            string filePath = Path.Combine(entityPath, areaName, $"{tableName}.cs");
-            string nameSpace = $@"CoreFrame.Entity.{areaName}";
+            string filePath = Path.Combine(entityPath, "Entity", $"{tableName}.cs");
+            string nameSpace = $@"CoreFrame.Entity";
 
             _dbHelper.SaveEntityToFile(tableInfo, tableName, _dbTableInfoDic[tableName].Description, filePath, nameSpace);
         }
