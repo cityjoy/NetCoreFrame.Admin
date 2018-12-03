@@ -192,7 +192,7 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
                                              
                                         </td>
                                         <td>
-                                            <p> <a class="imgdata" href="@a.SavePath" data-dir="@a.Directory" data-name="@a.Name" data-thumb="a.ThumbSavePath"  target="_blank">@a.Name</a></p>
+                                            <p> <a class="imgdata" href="@a.SavePath" data-dir="@a.Directory" data-name="@a.Name" data-thumb="@a.Thumb"  target="_blank">@a.Name</a></p>
                                             @if (
 string.Compare(a.FileExt, ".jpg", true) == 0
 ||
@@ -210,7 +210,7 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
                                                 <p>  <a href="javascript:void(0)" onclick="SetArticleImage('@a.Thumb');return false;">[设为文章缩略图]</a></p>
                                             }
                                                 <p> <a href="javascript:void(0)" onclick="InsertAttachmentToEditor('txtContent', '@a.Name}', '@a.FileExt', '@a.SavePath');return false;">[插入正文]</a></p>
-                                                <p> <a href="javascript:void(0)" onclick="DeleteAttachment(@a.Id,'@a.Directory');return false;">[删除]</a></p>
+                                                <p> <a href="javascript:void(0)" onclick="DeleteAttachment($(this),@a.Id,'@a.Directory');return false;">[删除]</a></p>
                                             </td>
                                     </tr>
                                 }
@@ -303,7 +303,7 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
                 $.postJSON(rootUrl + 'AttachmentManage/Attachment/DeleteArticelFile', { attachmentId: attachmentId, path: path }, function (resJson) {
                     if (resJson.Success) {
 
-                        obj.parent('tr').remove();
+                        obj.parent().parent().parent('tr').remove();
                         dialogMsg('删除成功!');
                     }
                     else {
@@ -331,7 +331,23 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
         $('#saveForm').click(function () {
             if (!$('#dataForm').form('enableValidation').form('validate'))
                 return;
+            var imgdatas = $('#AttachmentListContainer').find('.imgdata');
+            var attachments = "";
+            var values = [];
+            if (imgdatas.length > 0) {
 
+                imgdatas.each(function (i, item) {
+                    var path = $(this).attr('href');
+                    var thumbpath = $(this).attr('data-thumb');
+                    var v = dir + '&' + path;;
+                    var dir = $(this).attr('data-dir');
+                    var name = $(this).attr('data-name');
+                    var v = dir + '&' + path + '&' + thumbpath + '&' + name;
+                    values.push(v);
+                });
+            }
+            attachments = values.join(',')
+            $('#Attachments').val(attachments);
             var formValues = $('#dataForm').getValues();
             $.extend(theEntity, formValues);
             var editorIntroduction = HtmlEditors["txtContent"];

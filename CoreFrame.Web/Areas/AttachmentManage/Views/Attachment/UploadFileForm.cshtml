@@ -39,7 +39,7 @@
                 <p>  <a href="javascript:void(0)" onclick="SetArticleImage('${thumb}');return false;">[设为文章缩略图]</a></p>
                 {$/if}
                 <p> <a href="javascript:void(0)" onclick="InsertAttachmentToEditor('txtContent', '${fileName}', '${fileExt}', '${path}');return false;">[插入正文]</a></p>
-                <p> <a href="javascript:void(0)" onclick="DeleteAttachment(${articleId},'${directory}');return false;">[删除]</a></p>
+                <p> <a href="javascript:void(0)" onclick="DeleteAttachment($(this),${articleId},'${directory}');return false;">[删除]</a></p>
             </td>
         </tr>
     </script>
