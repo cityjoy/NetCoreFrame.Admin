@@ -112,14 +112,14 @@ namespace CoreFrame.Business.Base_SysManage
         private void BuildBusiness(string areaName, string entityName)
         {
             string code =
-$@"using CoreFrame.Entity.{areaName};
+$@"using CoreFrame.Entity;
 using CoreFrame.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
-namespace CoreFrame.Business.{areaName}
+namespace CoreFrame.Business
 {{
     public class {entityName}Business : BaseBusiness<{entityName}>,I{entityName}Business
     {{
@@ -154,14 +154,14 @@ namespace CoreFrame.Business.{areaName}
         {
             string code = code =
 $@"using CoreFrame.DataRepository;
-using CoreFrame.Entity.{areaName};
+using CoreFrame.Entity;
 using CoreFrame.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
-namespace CoreFrame.Business.{areaName}
+namespace CoreFrame.Business
 {{
     public interface I{entityName}Business : IRepository<{entityName}>
     {{
@@ -187,8 +187,8 @@ namespace CoreFrame.Business.{areaName}
         {
             string varBusiness = $@"_{entityName.ToFirstLowerStr()}Business";
             string code =
-$@"using CoreFrame.Business.{areaName};
-using CoreFrame.Entity.{areaName};
+$@"using CoreFrame.Business;
+using CoreFrame.Entity;
 using CoreFrame.Util;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -302,7 +302,7 @@ namespace CoreFrame.Web
                 }
 
                     //数据表格列
-                string end = (index == tableInfoList.Count - 2) ? "" : ",";
+                string end = (index == tableInfoList.Count - 1) ? "" : ",";
                 string newCol =$@"
                 {{ title: '{aField.Description}', field: '{aField.Name}', width: 200 }}{end}";
                 tableColsBuilder.Append(newCol);
@@ -317,11 +317,12 @@ namespace CoreFrame.Web
             </tr>";
                 formRowBuilder.Append(newFormRow);
             });
+            #region Index页面
             string indexHtml =
 $@"@using CoreFrame.Business.Base_SysManage;
 @{{
     Layout = ""~/Views/Shared/_Layout_List.cshtml"";
-    var manage = PermissionManage.OperatorHasPermissionValue();//根据具体权限值设置
+    var manage = PermissionManage.OperatorHasPermissionValue(""{entityName}.manage"");//根据具体权限值设置
 
 }}
 @section search{{
@@ -340,7 +341,7 @@ $@"@using CoreFrame.Business.Base_SysManage;
 @if (manage)
     {{
     <div class=""search_item"" >
-    < a id=""add"" class=""easyui-linkbutton"" data-options=""iconCls:'icon-add'"">添加</a>
+    <a id=""add"" class=""easyui-linkbutton"" data-options=""iconCls:'icon-add'"">添加</a>
     <a id=""edit"" class=""easyui-linkbutton"" data-options=""iconCls:'icon-edit'"">修改</a>
     <a id=""delete"" class=""easyui-linkbutton"" data-options=""iconCls:'icon-remove'"">删除</a>
     </div> 
@@ -444,13 +445,15 @@ $@"@using CoreFrame.Business.Base_SysManage;
         }});
     }});
 </script>";
-            string indexPath = Path.Combine(_contentRootPath, "Areas", areaName, "Views", entityName, "Index.cshtml");
-
+            #endregion
+            string indexPath = Path.Combine(_contentRootPath, "Areas", areaName, "Views", "Index.cshtml");
             FileHelper.WriteTxt(indexHtml, indexPath, FileMode.Create);
-
             //生成Form页面
+
+            #region form页面
+
             string formHtml = 
-$@"@using CoreFrame.Entity.{areaName};
+$@"@using CoreFrame.Entity;
 @using CoreFrame.Util;
 
 @{{
@@ -500,7 +503,8 @@ $@"@using CoreFrame.Entity.{areaName};
     }});
 </script>
 ";
-            string formPath = Path.Combine(_contentRootPath, "Areas", areaName, "Views", entityName, "Form.cshtml");
+            #endregion
+            string formPath = Path.Combine(_contentRootPath, "Areas", areaName, "Views", "Form.cshtml");
 
             FileHelper.WriteTxt(formHtml, formPath, FileMode.Create);
         }
