@@ -1,5 +1,6 @@
 ﻿using CoreFrame.Util;
 using CoreFrame.Util.Model;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using RestSharp;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CoreFrame.Web.Common
@@ -28,15 +30,39 @@ namespace CoreFrame.Web.Common
             API_SITE = resource;
             Request = new RestRequest();
             Request.RequestFormat = DataFormat.Json;
-            string secretkey = "!cybd*2017$";
-            string nonce = Guid.NewGuid().ToString().Replace("-", string.Empty);
-            long timestamp = DateTimeHelper.ConvertToUnixTimestamp(DateTime.Now);
-            string signature = BuildSignature(secretkey, timestamp, nonce);
-            Request.AddHeader("signature", signature);
-            Request.AddHeader("timestamp", timestamp.ToString());
-            Request.AddHeader("nonce", nonce);
-        }
 
+            //string secretkey = "!cybd*2017$";
+            //string nonce = Guid.NewGuid().ToString().Replace("-", string.Empty);
+            //long timestamp = DateTimeHelper.ConvertToUnixTimestamp(DateTime.Now);
+            //string signature = BuildSignature(secretkey, timestamp, nonce);
+            //Request.AddHeader("signature", signature);
+            //Request.AddHeader("timestamp", timestamp.ToString());
+            //Request.AddHeader("nonce", nonce);
+        }
+        /// <summary>
+        /// 从identittyServer服务器中获取Ttoken添加到Authorization头部
+        /// </summary>
+        /// <param name="tokenAddress">发放token的服务器地址</param>
+        /// <returns></returns>
+        public async  Task<RestRequest> AddAuthorization(string tokenAddress)
+        {
+            #region 向identittyServer服务器请求Ttoken
+            var client = new HttpClient();
+            TokenRequest request = new TokenRequest
+            {
+                Address = tokenAddress,
+                GrantType = "client_credentials",
+
+                ClientId = "myblogclient666",
+                ClientSecret = "myblogsecret999",
+            };
+            var tokenResponse = await  client.RequestTokenAsync(request);
+            //AjaxResult res = _homeBus.SubmitLogin(userName, password);
+            Request.AddHeader("Authorization", "Bearer " + tokenResponse.AccessToken);
+            #endregion
+            return Request;
+
+        }
 
 
         public T Get<T>(string url, object pars = null)
@@ -51,10 +77,10 @@ namespace CoreFrame.Web.Common
             T data = GetApiInfo<T>(url, type, pars);
             return data;
         }
-        public T PostFiles<T>(string url, object pars = null, IFormFile attachFile = null)
+        public T PostFiles<T>(string url, object pars = null, IList<IFormFile> files = null)
         {
             var type = Method.POST;
-            T data = PostAttachFile<T>(url, type, pars, attachFile);
+            T data = PostAttachFile<T>(url, type, pars, files);
             return data;
         }
 
@@ -83,9 +109,9 @@ namespace CoreFrame.Web.Common
         /// <param name="url">api地址</param>
         /// <param name="type">方法类型</param>
         /// <param name="pars">参数</param>
-        /// <param name="attachFile">客户端上传的附件</param>
+        /// <param name="files">客户端上传的附件</param>
         /// <returns></returns>
-        private T PostAttachFile<T>(string url, Method type, object pars = null,IFormFile  attachFile = null)
+        private T PostAttachFile<T>(string url, Method type, object pars = null, IList<IFormFile>  files = null)
         {
             Request.Method = type;
             //Request.RequestFormat = DataFormat.Json;
@@ -102,14 +128,17 @@ namespace CoreFrame.Web.Common
             {
                 Request.AddObject(pars);
             }
-            if (attachFile != null)
+            foreach (var formFile in files)
             {
+                if (formFile.Length > 0)
+                {
 
-                long fileLength = attachFile.Length;
-                byte[] fileBytes = new byte[fileLength];
-                Stream s = attachFile.OpenReadStream();
-                s.Read(fileBytes, 0, fileBytes.Length);
-                Request.AddFile("attachFile", fileBytes, attachFile.FileName);
+                    long fileLength = formFile.Length;
+                    byte[] fileBytes = new byte[fileLength];
+                    Stream s = formFile.OpenReadStream();
+                    s.Read(fileBytes, 0, fileBytes.Length);
+                    Request.AddFile("Files", fileBytes, formFile.FileName);
+                }
 
             }
             var client = new RestClient(API_SITE + url);

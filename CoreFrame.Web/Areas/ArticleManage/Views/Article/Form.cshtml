@@ -137,13 +137,13 @@
                 <td id="Cover">
                     @if (obj.Article.Cover.IsNullOrEmpty() == false)
                     {
-                        <img id="articleCover" src="@(obj.Article.Cover)" />
+                        <img id="articleCover" src="@(Vars.FILESTORE_SITE + obj.Article.Cover)" />
                     }
                     else
                     {
                         <img id="articleCover" src="~/default.jpg" />
                     }
-                    <input type="hidden" id="cover" name="Article.Cover" value="@obj.Article.Cover">
+                    <input type="hidden" id="cover" name="Article.Cover" value="@(Vars.FILESTORE_SITE + obj.Article.Cover)">
                 </td>
             </tr>
             <tr>
@@ -187,12 +187,12 @@ string.Compare(a.FileExt, ".ico", true) == 0
 string.Compare(a.FileExt, ".jpeg", true) == 0
 )
                                             {
-                                            <a href="javascript:void(0)" onclick="SetArticleImage('@a.Thumb');return false;"><img src="@a.Thumb" /></a>
+                                            <a href="javascript:void(0)" onclick="SetArticleImage('@(Vars.FILESTORE_SITE + a.Thumb)');return false;"><img src="@(Vars.FILESTORE_SITE + a.Thumb)" /></a>
                                             }
                                              
                                         </td>
                                         <td>
-                                            <p> <a class="imgdata" href="@a.SavePath" data-dir="@a.Directory" data-name="@a.Name" data-thumb="@a.Thumb"  target="_blank">@a.Name</a></p>
+                                            <p> <a class="imgdata" href="@(Vars.FILESTORE_SITE + a.SavePath)" data-dir="@a.Directory" data-name="@a.Name" data-thumb="@(Vars.FILESTORE_SITE + a.Thumb)"  target="_blank">@a.Name</a></p>
                                             @if (
 string.Compare(a.FileExt, ".jpg", true) == 0
 ||
@@ -207,9 +207,9 @@ string.Compare(a.FileExt, ".ico", true) == 0
 string.Compare(a.FileExt, ".jpeg", true) == 0
 )
                                             {
-                                                <p>  <a href="javascript:void(0)" onclick="SetArticleImage('@a.Thumb');return false;">[设为文章缩略图]</a></p>
+                                                <p>  <a href="javascript:void(0)" onclick="SetArticleImage('@(Vars.FILESTORE_SITE + a.Thumb)');return false;">[设为文章缩略图]</a></p>
                                             }
-                                                <p> <a href="javascript:void(0)" onclick="InsertAttachmentToEditor('txtContent', '@a.Name}', '@a.FileExt', '@a.SavePath');return false;">[插入正文]</a></p>
+                                                <p> <a href="javascript:void(0)" onclick="InsertAttachmentToEditor('txtContent', '@a.Name}', '@a.FileExt', '@(Vars.FILESTORE_SITE + a.SavePath)');return false;">[插入正文]</a></p>
                                                 <p> <a href="javascript:void(0)" onclick="DeleteAttachment($(this),@a.Id,'@a.Directory');return false;">[删除]</a></p>
                                             </td>
                                     </tr>
@@ -325,7 +325,7 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
                 title: '上传文件',
                 width: '500',
                 height: '200',
-                url: '/AttachmentManage/Attachment/UploadFileForm?articleId=' + theEntity.Id,
+                url: '/AttachmentManage/Attachment/UploadFileForm?articleId=' + theEntity.Article.Id,
             });
         });
         $('#saveForm').click(function () {
@@ -360,7 +360,7 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
                     parent.dialogClose('form');
                 }
                 else {
-                    alert(resJson.Msg);
+                    parent.dialogMsg(resJson.Msg);
                 }
             });
         });

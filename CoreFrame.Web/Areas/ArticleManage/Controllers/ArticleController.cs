@@ -34,7 +34,8 @@ namespace CoreFrame.Web
             ArticleDto theData = new ArticleDto();
             List<Attachment> alist = new List<Attachment>();
 
-            if (id <= 0 ) {
+            if (id <= 0)
+            {
                 theData.Article = new Article();
                 theData.Attachments = "";
             }
@@ -45,7 +46,7 @@ namespace CoreFrame.Web
                 {
                     alist = _attachmentBusiness.GetIQueryableList(m => m.TargetId == theData.Article.Id).CastToList<Attachment>();
                 }
-                 
+
 
             }
             ViewBag.AttachmentList = alist;
@@ -79,28 +80,34 @@ namespace CoreFrame.Web
         /// <param name="theData">保存的数据</param>
         public ActionResult SaveData(ArticleDto theData)
         {
+            if (!string.IsNullOrEmpty(theData.Article.Cover))
+            {
+                theData.Article.Cover = theData.Article.Cover.Substring(theData.Article.Cover.IndexOf("/Upload"));
+            }
             if (theData.Article.Id == 0)
             {
                 theData.Article.CreateTime = DateTime.Now;
                 _articleBusiness.Insert(theData.Article);
-
-               
             }
             else
             {
                 _articleBusiness.Update(theData.Article);
                 _attachmentBusiness.Delete(m => m.TargetId == theData.Article.Id);
-               
+
             }
-            List<string> attachments = theData.Attachments.Split(',').CastToList<string>();
+            List<string> attachments = new List<string>();
+            if (!string.IsNullOrEmpty(theData.Attachments))
+            {
+                attachments = theData.Attachments.Split(',').CastToList<string>();
+            }
             List<Attachment> attachmentList = new List<Attachment>();
             attachments.ForEach(m =>
             {
                 var data = m.Split('&');
                 Attachment attach = new Attachment();
                 attach.Directory = data[0];
-                attach.SavePath = data[1];
-                attach.Thumb = data[2];
+                attach.SavePath = data[1].Substring(data[1].IndexOf("/Upload"));
+                attach.Thumb = data[2].Substring(data[1].IndexOf("/Upload")); 
                 attach.FileExt = Path.GetExtension(data[1]);
                 attach.Name = data[3];
                 attach.Type = 1;
@@ -113,6 +120,7 @@ namespace CoreFrame.Web
             {
                 _attachmentBusiness.BulkInsert(attachmentList);
             }
+
             return Success();
         }
 

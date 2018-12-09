@@ -28,7 +28,7 @@
 
             <td>
                 {$if (IsWebImage(fileName))}
-                <a href="javascript:void(0)" onclick="SetArticleImage('${thumb}');return false;"><img src="${thumb}"  /></a>
+                <a href="javascript:void(0)" onclick="SetArticleImage('${thumb}');return false;"><img src="${thumb}" /></a>
                 {$else}
                 <span>&nbsp;</span>
                 {$/if}
@@ -107,6 +107,7 @@
         };
 
         $('#saveForm').click(function () {
+
             if (!$('#dataForm').form('enableValidation').form('validate'))
                 return;
 
@@ -125,9 +126,9 @@
                 success: function (resJson) {
                     if (resJson.Success) {
                         parent.dialogMsg('上传成功!');
-                        var attach = resJson['Data'];
+                        var attachData = resJson['Data'];
                         var tmpl = $('#AttachmentItemTemplate').html();
-                        var html = juicer(tmpl, attach);
+                        var html = juicer(tmpl, attachData['list'][0]);
                         parent.$('#AttachmentListContainer').append(html);
                         var imgdatas = parent.$('#AttachmentListContainer').find('.imgdata');
                         var attachments = "";
