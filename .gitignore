@@ -1,2 +1,10 @@
 /CoreFrame.Identity/wwwroot/Upload
 .vs
+/CoreFrame.BlogWeb/obj
+/CoreFrame.Business/obj
+/CoreFrame.DataRepository/obj
+/CoreFrame.Entity/obj
+/CoreFrame.FileStoreServer/obj
+/CoreFrame.Identity/obj
+/CoreFrame.Util/obj
+/CoreFrame.Web/obj
