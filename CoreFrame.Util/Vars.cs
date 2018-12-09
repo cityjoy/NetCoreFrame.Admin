@@ -61,9 +61,9 @@ namespace CoreFrame.Util
             }
         }
         /// <summary>
-        /// m站
+        /// identityServer站
         /// </summary>
-        public readonly static string MOBILE_SITE = ConfigHelper.GetValue("MOBILE_SITE");
+        public readonly static string IDENTITYSERVER_SITE = ConfigHelper.GetValue("IDENTITYSERVER_SITE");
         /// <summary>
         /// 后台站
         /// </summary>
