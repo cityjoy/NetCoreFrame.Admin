@@ -195,8 +195,9 @@ namespace CoreFrame.DataRepository
                 Db.SaveChanges();
                 Transaction.Commit();
             }
-            catch
+            catch(Exception ex)
             {
+                LogHelper.WriteLog_LocalTxt(ex.ToString());
                 Transaction.Rollback();
                 isOK = false;
             }
