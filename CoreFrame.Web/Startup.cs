@@ -33,6 +33,7 @@ namespace CoreFrame.Web
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)//增加环境配置文件，新建项目默认有
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
             //加载log4net日志配置文件
             Repository = LogManager.CreateRepository("NETCoreRepository");
             XmlConfigurator.Configure(Repository, new FileInfo("log4net.config"));

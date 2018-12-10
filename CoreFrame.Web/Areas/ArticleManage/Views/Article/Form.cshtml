@@ -354,6 +354,7 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
             var content = editorIntroduction.html();
             theEntity['Content'] = content;
             $.postJSON(rootUrl + 'ArticleManage/Article/SaveData', theEntity, function (resJson) {
+
                 if (resJson.Success) {
                     parent.dialogMsg('保存成功!');
                     parent.$('#dataTable').datagrid('reload');
