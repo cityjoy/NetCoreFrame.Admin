@@ -41,11 +41,15 @@
 
     $(function () {
         $('#saveForm').click(function () {
+            var s = ('#dataForm').form('enableValidation').form('validate');
+            alert(s);
             if (!$('#dataForm').form('enableValidation').form('validate'))
                 return;
 
             var formValues = $('#dataForm').getValues();
             $.extend(theEntity, formValues);
+            var data = JSON.stringify(theEntity)
+            alert(data);
             $.postJSON(rootUrl + 'ProjectManage/Dev_Project/SaveData', theEntity, function (resJson) {
                 if (resJson.Success) {
                     parent.dialogMsg('保存成功!');

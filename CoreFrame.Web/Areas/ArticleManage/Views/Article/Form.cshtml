@@ -129,33 +129,33 @@
             <tr>
                 <th>标题</th>
                 <td>
-                    <input name="Article.Title" value="@obj.Article.Title" class="easyui-textbox" data-options="width:'500px',required:true">
+                    <input name="Title" value="@obj.Title" class="easyui-textbox" data-options="width:'500px',required:true">
                 </td>
             </tr>
             <tr>
                 <th>封面</th>
                 <td id="Cover">
-                    @if (obj.Article.Cover.IsNullOrEmpty() == false)
+                    @if (obj.Cover.IsNullOrEmpty() == false)
                     {
-                        <img id="articleCover" src="@(Vars.FILESTORE_SITE + obj.Article.Cover)" />
+                        <img id="articleCover" src="@(Vars.FILESTORE_SITE + obj.Cover)" />
                     }
                     else
                     {
                         <img id="articleCover" src="~/default.jpg" />
                     }
-                    <input type="hidden" id="cover" name="Article.Cover" value="@(Vars.FILESTORE_SITE + obj.Article.Cover)">
+                    <input type="hidden" id="cover" name="Cover" value="@(Vars.FILESTORE_SITE + obj.Cover)">
                 </td>
             </tr>
             <tr>
                 <th>浏览数</th>
                 <td>
-                    <input name="Article.PageView" value="@obj.Article.PageView" class="easyui-textbox" data-options="width:'200px',required:true">
+                    <input name="PageView" value="@obj.PageView" class="easyui-textbox" data-options="width:'200px',required:true">
                 </td>
             </tr>
             <tr>
                 <th>内容</th>
                 <td>
-                    <textarea id="txtContent" rows="12">@Html.Raw(obj.Article.Content)</textarea>
+                    <textarea id="txtContent" rows="12">@Html.Raw(obj.Content)</textarea>
                 </td>
             </tr>
             <tr>
@@ -325,7 +325,7 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
                 title: '上传文件',
                 width: '500',
                 height: '200',
-                url: '/AttachmentManage/Attachment/UploadFileForm?articleId=' + theEntity.Article.Id,
+                url: '/AttachmentManage/Attachment/UploadFileForm?articleId=' + theEntity.Id,
             });
         });
         $('#saveForm').click(function () {
@@ -352,7 +352,7 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
             $.extend(theEntity, formValues);
             var editorIntroduction = HtmlEditors["txtContent"];
             var content = editorIntroduction.html();
-            theEntity['Article.Content'] = content;
+            theEntity['Content'] = content;
             $.postJSON(rootUrl + 'ArticleManage/Article/SaveData', theEntity, function (resJson) {
                 if (resJson.Success) {
                     parent.dialogMsg('保存成功!');

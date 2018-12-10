@@ -18,18 +18,25 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 namespace CoreFrame.Web
 {
     public class Startup
     {
         public static ILoggerRepository Repository { get; set; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)//增加环境配置文件，新建项目默认有
+                .AddEnvironmentVariables();
+            Configuration = builder.Build();
             //加载log4net日志配置文件
             Repository = LogManager.CreateRepository("NETCoreRepository");
             XmlConfigurator.Configure(Repository, new FileInfo("log4net.config"));
+
 
         }
 
@@ -48,7 +55,7 @@ namespace CoreFrame.Web
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton(Configuration);
             services.AddLogging();
-
+            services.AddAutoMapper();
             //使用Autofac替换自带IOC
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule<BusinessModule>();

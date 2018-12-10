@@ -35,7 +35,7 @@ namespace CoreFrame.FileStoreServer.Controllers
         }
 
         /// <summary>
-        /// 上传文件
+        /// 上传文件 
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>

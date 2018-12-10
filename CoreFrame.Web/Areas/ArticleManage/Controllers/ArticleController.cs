@@ -1,3 +1,4 @@
+using AutoMapper;
 using CoreFrame.Business.ArticleManage;
 using CoreFrame.Business.AttachmentManage;
 using CoreFrame.Entity.ArticleManage;
@@ -15,11 +16,12 @@ namespace CoreFrame.Web
     {
         private IAttachmentBusiness _attachmentBusiness;
         private IArticleBusiness _articleBusiness;
-
-        public ArticleController(IArticleBusiness dev_ArticleBusiness, IAttachmentBusiness dev_attachmentBusiness)
+        private IMapper _mapper;
+        public ArticleController(IArticleBusiness dev_ArticleBusiness, IAttachmentBusiness dev_attachmentBusiness, IMapper mapper)
         {
             _articleBusiness = dev_ArticleBusiness;
             _attachmentBusiness = dev_attachmentBusiness;
+            _mapper = mapper;
         }
 
         #region 视图功能
@@ -34,17 +36,14 @@ namespace CoreFrame.Web
             ArticleDto theData = new ArticleDto();
             List<Attachment> alist = new List<Attachment>();
 
-            if (id <= 0)
+            if (id > 0)
+
             {
-                theData.Article = new Article();
-                theData.Attachments = "";
-            }
-            else
-            {
-                theData.Article = _articleBusiness.GetEntity(id);
-                if (theData.Article != null)
+                Article article = _articleBusiness.GetEntity(id);
+                if (article != null)
                 {
-                    alist = _attachmentBusiness.GetIQueryableList(m => m.TargetId == theData.Article.Id).CastToList<Attachment>();
+                    theData = _mapper.Map<Article,ArticleDto>(article);//进行Dto对象与模型之间的映射
+                    alist = _attachmentBusiness.GetIQueryableList(m => m.TargetId == article.Id).CastToList<Attachment>();
                 }
 
 
@@ -80,19 +79,21 @@ namespace CoreFrame.Web
         /// <param name="theData">保存的数据</param>
         public ActionResult SaveData(ArticleDto theData)
         {
-            if (!string.IsNullOrEmpty(theData.Article.Cover))
+            if (!string.IsNullOrEmpty(theData.Cover))
             {
-                theData.Article.Cover = theData.Article.Cover.Substring(theData.Article.Cover.IndexOf("/Upload"));
+                theData.Cover = theData.Cover.Substring(theData.Cover.IndexOf("/Upload"));
             }
-            if (theData.Article.Id == 0)
+            Article article =  _mapper.Map<ArticleDto, Article>(theData);//进行Dto对象与模型之间的映射
+
+            if (theData.Id == 0)
             {
-                theData.Article.CreateTime = DateTime.Now;
-                _articleBusiness.Insert(theData.Article);
+                article.CreateTime = DateTime.Now;
+                _articleBusiness.Insert(article);
             }
             else
             {
-                _articleBusiness.Update(theData.Article);
-                _attachmentBusiness.Delete(m => m.TargetId == theData.Article.Id);
+                _articleBusiness.Update(article);
+                _attachmentBusiness.Delete(m => m.TargetId == article.Id);
 
             }
             List<string> attachments = new List<string>();
@@ -107,11 +108,11 @@ namespace CoreFrame.Web
                 Attachment attach = new Attachment();
                 attach.Directory = data[0];
                 attach.SavePath = data[1].Substring(data[1].IndexOf("/Upload"));
-                attach.Thumb = data[2].Substring(data[1].IndexOf("/Upload")); 
+                attach.Thumb = data[2].Substring(data[1].IndexOf("/Upload"));
                 attach.FileExt = Path.GetExtension(data[1]);
                 attach.Name = data[3];
                 attach.Type = 1;
-                attach.TargetId = theData.Article.Id;
+                attach.TargetId = article.Id;
                 attach.CreateTime = DateTime.Now;
                 attach.Store = 0;
                 attachmentList.Add(attach);
