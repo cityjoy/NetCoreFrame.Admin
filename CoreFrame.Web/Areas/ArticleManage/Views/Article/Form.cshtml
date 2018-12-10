@@ -371,7 +371,6 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
                      tags.push($(this).val());
             });
             $('#tags').val(tags.join(',')+',');
-
             var formValues = $('#dataForm').getValues();
             $.extend(theEntity, formValues);
             var editorIntroduction = HtmlEditors["txtContent"];

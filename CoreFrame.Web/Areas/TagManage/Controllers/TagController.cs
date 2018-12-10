@@ -10,7 +10,6 @@ namespace CoreFrame.Web
     public class TagController : BaseMvcController
     {
         private ITagBusiness _tagBusiness ;
-
         public TagController(ITagBusiness dev_TagBusiness)
         {
             _tagBusiness = dev_TagBusiness;
