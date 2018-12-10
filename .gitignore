@@ -8,3 +8,11 @@
 /CoreFrame.Identity/obj
 /CoreFrame.Util/obj
 /CoreFrame.Web/obj
+/CoreFrame.BlogWeb/bin
+/CoreFrame.Business/bin
+/CoreFrame.DataRepository/bin
+/CoreFrame.Entity/bin
+/CoreFrame.FileStoreServer/bin
+/CoreFrame.Identity/bin
+/CoreFrame.Util/bin
+/CoreFrame.Web/bin
