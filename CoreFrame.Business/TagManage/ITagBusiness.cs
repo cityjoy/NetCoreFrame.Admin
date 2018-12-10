@@ -13,6 +13,5 @@ namespace CoreFrame.Business
         #region 外部接口
      
         #endregion
-        
     }
 }

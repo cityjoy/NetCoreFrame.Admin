@@ -18,7 +18,7 @@ namespace CoreFrame.Entity
         public int Id { get; set; }
 
         /// <summary>
-        /// TagName
+        /// 标签名称
         /// </summary>
         public string TagName { get; set; }
 
