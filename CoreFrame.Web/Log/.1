@@ -1,4 +1,4 @@
-2018-12-10 11:54:48,353 [8] ERROR CoreFrame.Web.GlobalExceptionFilter [(null)] - Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: 不能将值 NULL 插入列 'Content'，表 'CoreFrame.Admin.dbo.Article'；列不允许有 Null 值。INSERT 失败。
+2018-12-10 16:54:45,595 [11] ERROR CoreFrame.Web.GlobalExceptionFilter [(null)] - Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: 不能将值 NULL 插入列 'TagIdList'，表 'CoreFrame.Admin.dbo.Article'；列不允许有 Null 值。UPDATE 失败。
 语句已终止。
    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
@@ -26,8 +26,8 @@
    at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
    at Microsoft.EntityFrameworkCore.DbContext.SaveChanges()
    at CoreFrame.DataRepository.DbRepository.Commit() in F:\NetCoreFrame.Admin\CoreFrame.DataRepository\Repository\DbRepository.cs:line 157
-   at CoreFrame.DataRepository.DbRepository.Insert[T](T entity) in F:\NetCoreFrame.Admin\CoreFrame.DataRepository\Repository\DbRepository.cs:line 236
-   at CoreFrame.Business.BaseBusiness`1.Insert(T entity) in F:\NetCoreFrame.Admin\CoreFrame.Business\BaseBusiness\BaseBusiness.T.cs:line 135
+   at CoreFrame.DataRepository.DbRepository.Update[T](T entity) in F:\NetCoreFrame.Admin\CoreFrame.DataRepository\Repository\DbRepository.cs:line 405
+   at CoreFrame.Business.BaseBusiness`1.Update(T entity) in F:\NetCoreFrame.Admin\CoreFrame.Business\BaseBusiness\BaseBusiness.T.cs:line 247
    at CoreFrame.Web.ArticleController.SaveData(ArticleDto theData) in F:\NetCoreFrame.Admin\CoreFrame.Web\Areas\ArticleManage\Controllers\ArticleController.cs:line 101
    at lambda_method(Closure , Object , Object[] )
    at Microsoft.Extensions.Internal.ObjectMethodExecutor.Execute(Object target, Object[] parameters)

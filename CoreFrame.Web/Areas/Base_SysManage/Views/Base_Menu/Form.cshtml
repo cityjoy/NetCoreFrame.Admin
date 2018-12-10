@@ -165,7 +165,6 @@
                 var parentMenuId = $('#ParentMenuId').combobox("getValue");//选中的值
                 $.each(parentMenuList, function (n, value) {
                     if (value.Id == parentMenuId) {
-                        alert(value.ModuleValue);
                         $('#ModuleValue').textbox('setValue', value.ModuleValue);
                     }
                 });

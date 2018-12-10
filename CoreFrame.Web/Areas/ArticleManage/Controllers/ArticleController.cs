@@ -1,6 +1,8 @@
 using AutoMapper;
+using CoreFrame.Business;
 using CoreFrame.Business.ArticleManage;
 using CoreFrame.Business.AttachmentManage;
+using CoreFrame.Entity;
 using CoreFrame.Entity.ArticleManage;
 using CoreFrame.Entity.AttachmentManage;
 using CoreFrame.Util;
@@ -16,11 +18,13 @@ namespace CoreFrame.Web
     {
         private IAttachmentBusiness _attachmentBusiness;
         private IArticleBusiness _articleBusiness;
+        private ITagBusiness _tagBusiness;
         private IMapper _mapper;
-        public ArticleController(IArticleBusiness dev_ArticleBusiness, IAttachmentBusiness dev_attachmentBusiness, IMapper mapper)
+        public ArticleController(IArticleBusiness dev_ArticleBusiness, IAttachmentBusiness dev_attachmentBusiness, ITagBusiness tagBusiness, IMapper mapper)
         {
             _articleBusiness = dev_ArticleBusiness;
             _attachmentBusiness = dev_attachmentBusiness;
+            _tagBusiness = tagBusiness;
             _mapper = mapper;
         }
 
@@ -35,6 +39,7 @@ namespace CoreFrame.Web
         {
             ArticleDto theData = new ArticleDto();
             List<Attachment> alist = new List<Attachment>();
+            List<Tag> tagList = new List<Tag>();
 
             if (id > 0)
 
@@ -44,11 +49,13 @@ namespace CoreFrame.Web
                 {
                     theData = _mapper.Map<Article,ArticleDto>(article);//进行Dto对象与模型之间的映射
                     alist = _attachmentBusiness.GetIQueryableList(m => m.TargetId == article.Id).CastToList<Attachment>();
+                    tagList = _tagBusiness.GetIQueryableList(m => m.Id > 0).CastToList<Tag>();
                 }
 
 
             }
             ViewBag.AttachmentList = alist;
+            ViewBag.TagList = tagList;
             return View(theData);
         }
 

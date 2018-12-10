@@ -214,9 +214,13 @@ namespace CoreFrame.Web
 
         public ActionResult Form(int id = 0)
         {{
-            var theData = id.IsNullOrEmpty() ? new {entityName}() : {varBusiness}.GetEntity(id);
+            {entityName} model = new {entityName}();
+            if (id > 0)
+            {{
+                model = {varBusiness}.GetEntity(id);
+            }}
 
-            return View(theData);
+            return View(model);
         }}
 
         #endregion
@@ -446,7 +450,7 @@ $@"@using CoreFrame.Business.Base_SysManage;
     }});
 </script>";
             #endregion
-            string indexPath = Path.Combine(_contentRootPath, "Areas", areaName, "Views", "Index.cshtml");
+            string indexPath = Path.Combine(_contentRootPath, "Areas", areaName, "Views", entityName, "Index.cshtml");
             FileHelper.WriteTxt(indexHtml, indexPath, FileMode.Create);
             //生成Form页面
 
@@ -504,7 +508,7 @@ $@"@using CoreFrame.Entity;
 </script>
 ";
             #endregion
-            string formPath = Path.Combine(_contentRootPath, "Areas", areaName, "Views", "Form.cshtml");
+            string formPath = Path.Combine(_contentRootPath, "Areas", areaName, "Views", entityName, "Form.cshtml");
 
             FileHelper.WriteTxt(formHtml, formPath, FileMode.Create);
         }

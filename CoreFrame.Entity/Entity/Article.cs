@@ -22,7 +22,12 @@ namespace CoreFrame.Entity.ArticleManage
         /// Title
         /// </summary>
         public string Title { get; set; }
-
+        
+        /// <summary>
+        /// TagIdList
+        /// </summary>
+        public string TagIdList { get; set; }
+        
         /// <summary>
         /// Cover
         /// </summary>
@@ -56,6 +61,11 @@ namespace CoreFrame.Entity.ArticleManage
         /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// TagIdList
+        /// </summary>
+        public string TagIdList { get; set; }
+        
         /// <summary>
         /// Cover
         /// </summary>

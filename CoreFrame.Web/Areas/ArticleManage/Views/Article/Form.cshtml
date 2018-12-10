@@ -1,3 +1,4 @@
+@using CoreFrame.Entity;
 @using CoreFrame.Entity.ArticleManage;
 @using CoreFrame.Entity.AttachmentManage;
 @using CoreFrame.Util;
@@ -133,6 +134,23 @@
                 </td>
             </tr>
             <tr>
+                <th>标签</th>
+                 
+                <td class="pretty-checkbox-mutiline">
+                    @{ List<Tag> tagList = ViewBag.TagList;
+                        foreach (var item in tagList)
+                        {
+                                <input  type="checkbox" value="@item.Id" @(obj.TagIdList.Contains(item.Id.ToString()+",") == true ? "checked=\"checked\"" : "") />
+                                <i></i><span class="text">@item.TagName</span>
+                        }
+                    }
+
+                    <input name="TagIdList" id="tags" type="hidden" value="@obj.TagIdList" />
+
+                </td>
+
+            </tr>
+            <tr>
                 <th>封面</th>
                 <td id="Cover">
                     @if (obj.Cover.IsNullOrEmpty() == false)
@@ -187,12 +205,12 @@ string.Compare(a.FileExt, ".ico", true) == 0
 string.Compare(a.FileExt, ".jpeg", true) == 0
 )
                                             {
-                                            <a href="javascript:void(0)" onclick="SetArticleImage('@(Vars.FILESTORE_SITE + a.Thumb)');return false;"><img src="@(Vars.FILESTORE_SITE + a.Thumb)" /></a>
+                                                <a href="javascript:void(0)" onclick="SetArticleImage('@(Vars.FILESTORE_SITE + a.Thumb)');return false;"><img src="@(Vars.FILESTORE_SITE + a.Thumb)" /></a>
                                             }
-                                             
+
                                         </td>
                                         <td>
-                                            <p> <a class="imgdata" href="@(Vars.FILESTORE_SITE + a.SavePath)" data-dir="@a.Directory" data-name="@a.Name" data-thumb="@(Vars.FILESTORE_SITE + a.Thumb)"  target="_blank">@a.Name</a></p>
+                                            <p> <a class="imgdata" href="@(Vars.FILESTORE_SITE + a.SavePath)" data-dir="@a.Directory" data-name="@a.Name" data-thumb="@(Vars.FILESTORE_SITE + a.Thumb)" target="_blank">@a.Name</a></p>
                                             @if (
 string.Compare(a.FileExt, ".jpg", true) == 0
 ||
@@ -209,9 +227,9 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
                                             {
                                                 <p>  <a href="javascript:void(0)" onclick="SetArticleImage('@(Vars.FILESTORE_SITE + a.Thumb)');return false;">[设为文章缩略图]</a></p>
                                             }
-                                                <p> <a href="javascript:void(0)" onclick="InsertAttachmentToEditor('txtContent', '@a.Name}', '@a.FileExt', '@(Vars.FILESTORE_SITE + a.SavePath)');return false;">[插入正文]</a></p>
-                                                <p> <a href="javascript:void(0)" onclick="DeleteAttachment($(this),@a.Id,'@a.Directory');return false;">[删除]</a></p>
-                                            </td>
+                                            <p> <a href="javascript:void(0)" onclick="InsertAttachmentToEditor('txtContent', '@a.Name}', '@a.FileExt', '@(Vars.FILESTORE_SITE + a.SavePath)');return false;">[插入正文]</a></p>
+                                            <p> <a href="javascript:void(0)" onclick="DeleteAttachment($(this),@a.Id,'@a.Directory');return false;">[删除]</a></p>
+                                        </td>
                                     </tr>
                                 }
                             }
@@ -348,6 +366,12 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
             }
             attachments = values.join(',')
             $('#Attachments').val(attachments);
+            var tags = [];
+                 $('input:checkbox:checked').each(function (index, item) {
+                     tags.push($(this).val());
+            });
+            $('#tags').val(tags.join(',')+',');
+
             var formValues = $('#dataForm').getValues();
             $.extend(theEntity, formValues);
             var editorIntroduction = HtmlEditors["txtContent"];
