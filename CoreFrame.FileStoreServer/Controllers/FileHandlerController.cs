@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using CoreFrame.Util;
+using System.IO;
+using System.Drawing.Imaging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using CoreFrame.FileStore.Filter;
+using Microsoft.AspNetCore.Authorization;
+using CoreFrame.FileStoreServer.Models;
 
 namespace CoreFrame.FileStoreServer.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class FilesController : ControllerBase
+    [Authorize]
+    public class FileHandlerController : ControllerBase
     {
         private readonly IHostingEnvironment _hostingEnvironment;
-        public FilesController(IHostingEnvironment hostingEnvironment)
+        public FileHandlerController(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
         }
-        [HttpGet]
-        public ActionResult<string> Index()
+
+        [Route("api/FileHandler/Index")]
+        public ActionResult Index()
         {
             string webRootPath = _hostingEnvironment.WebRootPath;
             string contentRootPath = _hostingEnvironment.ContentRootPath;
@@ -29,10 +34,15 @@ namespace CoreFrame.FileStoreServer.Controllers
             return Content(webRootPath + "\n" + contentRootPath);
         }
 
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Route("api/FileHandler/UploadArticelFile")]
         public PageActionResult UploadArticelFile([FromForm]UploadFileDto model)
         {
-            var res = HttpContext.Request.Form["articleId"];
             PageActionResult operateResult = new PageActionResult();
             List<UploadFileViewModel> filelist = new List<UploadFileViewModel>();
             try
@@ -143,7 +153,8 @@ namespace CoreFrame.FileStoreServer.Controllers
         /// <param name="savePath">文件夹</param>
         /// <returns></returns>
         [HttpPost]
-        public PageActionResult DeleteArticelFile(string savePath)
+        [Route("api/FileHandler/DeleteArticelFile")]
+        public PageActionResult DeleteArticelFile([FromForm]string savePath)
         {
             PageActionResult operateResult = new PageActionResult();
 
@@ -163,24 +174,11 @@ namespace CoreFrame.FileStoreServer.Controllers
                 operateResult.Message = "删除失败";
             }
 
-            return (operateResult);
+            return  (operateResult);
 
         }
 
 
     }
-    public class UploadFileViewModel
-    {
-        public int ArticleId { get; set; }
-        public string FileName { get; set; }
-        public string FileExt { get; set; }
-        public string Path { get; set; }
-        public string Thumb { get; set; }
-        public string Directory { get; set; }
-    }
-    public class UploadFileDto
-    {
-        public int ArticleId { get; set; }
-        public IList<IFormFile> Files { get; set; }
-    }
+
 }
