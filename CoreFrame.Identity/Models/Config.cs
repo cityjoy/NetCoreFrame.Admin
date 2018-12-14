@@ -25,7 +25,8 @@ namespace CoreFrame.IdentityServer.Models
                 new Client
                 {
                     ClientId = "myblogclient666",
-                    RefreshTokenExpiration= TokenExpiration.Sliding,
+                    ClientName="MVC Client",
+                    RefreshTokenExpiration= TokenExpiration.Absolute,
                     AllowedGrantTypes = GrantTypes.ClientCredentials,//授权方式，这里采用的是客户端认证模式，只要ClientId，以及ClientSecrets正确即可访问对应的AllowedScopes里面的api资源
                     ClientSecrets = { new Secret("myblogsecret999".Sha256()) },
                     AlwaysIncludeUserClaimsInIdToken=true,

@@ -1,8 +1,9 @@
 ﻿@model CoreFrame.Entity.ArticleManage.Article
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
     @section head{
+
         <style type="text/css">
             .hestia-title, .page-header.header-small .title {
                 font-family: "Roboto", "Helvetica", "Arial", sans-serif;

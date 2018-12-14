@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "05.CoreFrame.AdminWeb", "Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "07.CoreFrame.BlogWeb", "CoreFrame.BlogWeb\07.CoreFrame.BlogWeb.csproj", "{7E492422-E80A-4916-B658-8854C1D44024}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer4.DapperExtension", "CoreFrame.IdentityServer4.DapperExtension\IdentityServer4.DapperExtension.csproj", "{913427BD-D329-41FB-96FC-3422A8C9E917}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{7E492422-E80A-4916-B658-8854C1D44024}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E492422-E80A-4916-B658-8854C1D44024}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E492422-E80A-4916-B658-8854C1D44024}.Release|Any CPU.Build.0 = Release|Any CPU
+		{913427BD-D329-41FB-96FC-3422A8C9E917}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{913427BD-D329-41FB-96FC-3422A8C9E917}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{913427BD-D329-41FB-96FC-3422A8C9E917}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{913427BD-D329-41FB-96FC-3422A8C9E917}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

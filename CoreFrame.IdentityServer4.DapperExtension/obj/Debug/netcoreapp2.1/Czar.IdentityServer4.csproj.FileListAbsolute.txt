@@ -1,0 +1,9 @@
+F:\MyProject\1.NET_CORE\Czar.IdentityServer4-master\src\Czar.IdentityServer4\bin\Debug\netcoreapp2.1\Czar.IdentityServer4.deps.json
+F:\MyProject\1.NET_CORE\Czar.IdentityServer4-master\src\Czar.IdentityServer4\bin\Debug\netcoreapp2.1\Czar.IdentityServer4.dll
+F:\MyProject\1.NET_CORE\Czar.IdentityServer4-master\src\Czar.IdentityServer4\bin\Debug\netcoreapp2.1\Czar.IdentityServer4.pdb
+F:\MyProject\1.NET_CORE\Czar.IdentityServer4-master\src\Czar.IdentityServer4\obj\Debug\netcoreapp2.1\Czar.IdentityServer4.csprojAssemblyReference.cache
+F:\MyProject\1.NET_CORE\Czar.IdentityServer4-master\src\Czar.IdentityServer4\obj\Debug\netcoreapp2.1\Czar.IdentityServer4.csproj.CoreCompileInputs.cache
+F:\MyProject\1.NET_CORE\Czar.IdentityServer4-master\src\Czar.IdentityServer4\obj\Debug\netcoreapp2.1\Czar.IdentityServer4.AssemblyInfoInputs.cache
+F:\MyProject\1.NET_CORE\Czar.IdentityServer4-master\src\Czar.IdentityServer4\obj\Debug\netcoreapp2.1\Czar.IdentityServer4.AssemblyInfo.cs
+F:\MyProject\1.NET_CORE\Czar.IdentityServer4-master\src\Czar.IdentityServer4\obj\Debug\netcoreapp2.1\Czar.IdentityServer4.dll
+F:\MyProject\1.NET_CORE\Czar.IdentityServer4-master\src\Czar.IdentityServer4\obj\Debug\netcoreapp2.1\Czar.IdentityServer4.pdb

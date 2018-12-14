@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace CoreFrame.IdentityServer
 {
     public class Startup
@@ -36,9 +35,12 @@ namespace CoreFrame.IdentityServer
             //注入IdentityServer服务
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddInMemoryClients(Config.GetClients())
-                .AddInMemoryApiResources(Config.GetApiResources());
-
+                //.AddInMemoryClients(Config.GetClients())
+                //.AddInMemoryApiResources(Config.GetApiResources());
+            .AddDapperStore(option =>
+             {
+                 option.DbConnectionStrings = "Data Source=.;Initial Catalog=CoreFrame.Admin;User ID=llj;Password=123456;";
+             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton(Configuration);

@@ -20,6 +20,8 @@ using Autofac.Extensions.DependencyInjection;
 using CoreFrame.DataRepository;
 using CoreFrame.Entity.Base_SysManage;
 using System.Reflection;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace CoreFrame.BlogWeb
 {
@@ -42,7 +44,8 @@ namespace CoreFrame.BlogWeb
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-
+            //解决中文被编码
+            services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
             services.AddMvc(options =>
             {
                 options.Filters.Add<GlobalExceptionFilter>();
