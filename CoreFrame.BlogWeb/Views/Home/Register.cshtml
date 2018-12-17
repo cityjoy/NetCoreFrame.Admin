@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewData["Title"] = "注册";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div id="content-container" class="container">
+            <div class="es-section login-section">
+                <div class="logon-tab clearfix">
+                    <a href="/home/login">登录帐号</a>
+                    <a class="active">注册帐号</a>
+                </div>
+                <div class="login-main">
+                    <form id="register-form" method="post" action="">
+
+                        <div class="form-group mbl">
+                            <label class="control-label required" for="register_mobile">手机号码</label>
+                            <div class="controls">
+                                <input type="number" id="register_mobile" required="required" name="Mobile" class="form-control input-lg"placeholder="填写你常用的手机号码作为登录帐号">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mbl">
+                            <label class="control-label required" for="register_Username">用户名</label>
+                            <div class="controls">
+                                <input type="text" id="register_Username" name="Username" required="required" class="form-control input-lg"  placeholder="中、英文均可，最长18个英文或9个汉字">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group mbl">
+                            <label class="control-label required" for="register_password">密码</label>
+                            <div class="controls">
+                                <input type="password" id="register_password" name="Password" required="required" class="form-control input-lg" placeholder="5-20位英文、数字、符号，区分大小写">
+                                <p class="help-block"></p>
+                            </div>
+                        </div>
+                        @*<div class="form-group mbl  email_mobile_msg">
+                            <label class="control-label required" for="sms_code">短信验证码</label>
+                            <div class="controls row">
+                                <div class="col-xs-7">
+                                    <input type="number" class="form-control input-lg" id="sms_code" name="sms_code" placeholder="填写你的短信验证码" data-url="/edu_cloud/sms_check/sms_registration">
+                                    <p class="help-block"> </p>
+                                </div>
+                                <div class="col-xs-5">
+                                    <a href="#modal" data-toggle="modal" class="btn btn-default btn-lg js-sms-send disabled" data-url="/register/captcha/modal" data-sms-url="/edu_cloud/sms_send">
+                                        <span id="js-time-left"></span>
+                                        <span id="js-fetch-btn-text">获取验证码</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mbl">
+                            <label class="control-label required" for="invite_code">邀请码<span class="color-success">（选填）</span></label>
+                            <div class="controls">
+                                <input type="text" name="invite_code" class="form-control input-lg invitecode" data-url="/register/invitecode/check" placeholder="如果您有邀请码，请填写您的邀请码">
+                            </div>
+                        </div>*@
+
+                        <div class="form-group mbl">
+                            <div class="controls">
+                                <button type="submit" id="register-btn" data-submiting-text="正在提交..." class="btn btn-primary btn-lg btn-block">注册</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+    </div>
+
+
+

@@ -161,7 +161,8 @@
                     {
                         <img id="articleCover" src="~/default.jpg" />
                     }
-                    <input type="hidden" id="cover" name="Cover" value="@(Vars.FILESTORE_SITE + obj.Cover)">
+
+                    <input type="hidden" id="cover" name="Cover" value="@(obj.Cover!=null?Vars.FILESTORE_SITE + obj.Cover:"")">
                 </td>
             </tr>
             <tr>

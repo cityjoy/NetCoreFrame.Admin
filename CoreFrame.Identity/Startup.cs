@@ -32,6 +32,8 @@ namespace CoreFrame.IdentityServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(Configuration);
+
             //注入IdentityServer服务
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
@@ -39,7 +41,8 @@ namespace CoreFrame.IdentityServer
                 //.AddInMemoryApiResources(Config.GetApiResources());
             .AddDapperStore(option =>
              {
-                 option.DbConnectionStrings = "Data Source=.;Initial Catalog=CoreFrame.Admin;User ID=llj;Password=123456;";
+                 option.DbConnectionStrings = Configuration.GetConnectionString("BaseDb");
+                 //"Data Source=.;Initial Catalog=CoreFrame.Admin;User ID=llj;Password=123456;";
              });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
