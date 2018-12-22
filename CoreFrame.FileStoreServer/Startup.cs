@@ -39,6 +39,7 @@ namespace CoreFrame.FileStoreServer
 
                 options.Authority = Vars.IDENTITYSERVER_SITE;
                 options.RequireHttpsMetadata = false;
+                //options.JwtValidationClockSkew = TimeSpan.FromSeconds(0);//可以设置验证JWT令牌时允许的时钟偏移为0，默认为5分钟
                 options.ApiName = "FileStoreApi";
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

@@ -379,11 +379,9 @@
                 }
             });
 
-            if (options.checkbox == 'string') {
                 $.each(ckbFields, function (i, v) {
                     if ($.isArray(values[v])) values[v] = values[v].join(',');
                 });
-            }
 
             return values;
         }

@@ -24,7 +24,7 @@ namespace CoreFrame.BlogWeb.Controllers
         }
         public IActionResult Index()
         {
-            List<Article> articleList = _articleBusiness.GetIQueryableList(m => m.Id > 0).Take(10).ToList();
+            List<Article> articleList = _articleBusiness.GetIQueryableList(m => m.IsPublish == true).Take(10).ToList();
             return View(articleList);
         }
 

@@ -47,7 +47,11 @@ namespace CoreFrame.Entity.ArticleManage
         /// CreateTime
         /// </summary>
         public DateTime CreateTime { get; set; }
-
+       
+        /// <summary>
+        /// IsPublish
+        /// </summary>
+        public bool IsPublish { get; set; }
     }
 
     public class ArticleDto
@@ -65,7 +69,7 @@ namespace CoreFrame.Entity.ArticleManage
         /// TagIdList
         /// </summary>
         public string TagIdList { get; set; }
-        
+
         /// <summary>
         /// Cover
         /// </summary>
@@ -85,6 +89,11 @@ namespace CoreFrame.Entity.ArticleManage
         /// CreateTime
         /// </summary>
         public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// IsPublish
+        /// </summary>
+        public bool IsPublish { get; set; }
 
         public string Attachments { get; set; }
 

@@ -135,20 +135,27 @@
             </tr>
             <tr>
                 <th>标签</th>
-                 
+
                 <td class="pretty-checkbox-mutiline">
                     @{ List<Tag> tagList = ViewBag.TagList;
                         foreach (var item in tagList)
                         {
-                                <input  type="checkbox" value="@item.Id" @(obj.TagIdList.Contains(item.Id.ToString()+",") == true ? "checked=\"checked\"" : "") />
-                                <i></i><span class="text">@item.TagName</span>
+                            <input type="checkbox" name="TagIdList"    value="@item.Id" @(obj.TagIdList.Contains(item.Id.ToString()) == true ? "checked=\"checked\"" : "") />
+                            <i></i><span class="text">@item.TagName</span>
                         }
                     }
 
-                    <input name="TagIdList" id="tags" type="hidden" value="@obj.TagIdList" />
+                    @*<input name="TagIdList" id="tags" type="hidden" value="@obj.TagIdList" />*@
 
                 </td>
 
+            </tr>
+            <tr>
+                <th>是否发布</th>
+                <td>
+                    <input type="radio" id="isPublish" name="IsPublish" @(obj.IsPublish == true ? "checked='checked'" : "") value='true'>是
+                    <input type="radio" id="isPublish" name="IsPublish" @(obj.IsPublish == false ? "checked='checked'" : "") value='false'>否
+                </td>
             </tr>
             <tr>
                 <th>封面</th>
@@ -367,11 +374,11 @@ string.Compare(a.FileExt, ".jpeg", true) == 0
             }
             attachments = values.join(',')
             $('#Attachments').val(attachments);
-            var tags = [];
-                 $('input:checkbox:checked').each(function (index, item) {
-                     tags.push($(this).val());
-            });
-            $('#tags').val(tags.join(',')+',');
+            //var tags = [];
+            //$("input:checkbox[name='TagIdList']:checked").each(function (index, item) {
+            //    tags.push($(this).val());
+            //});
+            //$('#tags').val(tags.join(',') + ',');
             var formValues = $('#dataForm').getValues();
             $.extend(theEntity, formValues);
             var editorIntroduction = HtmlEditors["txtContent"];
