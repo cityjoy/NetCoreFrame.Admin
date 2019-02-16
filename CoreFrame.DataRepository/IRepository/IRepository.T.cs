@@ -54,10 +54,11 @@ namespace CoreFrame.DataRepository
         IQueryable<T> GetIQueryable();
         IQueryable<T> GetIQueryableList(Expression<Func<T, bool>> predicate);
         List<T> GetDataList(string condition, string keyword, Pagination pagination);
+        List<T> GetDataListByIds(List<string> fields,string key, List<int> ids);
         DataTable GetDataTableWithSql(string sql);
         DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters);
-        List<U> GetListBySql<U>(string sqlStr) where U : class, new();
-        List<U> GetListBySql<U>(string sqlStr, List<DbParameter> param) where U : class, new();
+        List<T> GetListBySql(string sqlStr);
+        List<T> GetListBySql(string sqlStr, List<DbParameter> param);
 
         #endregion
 

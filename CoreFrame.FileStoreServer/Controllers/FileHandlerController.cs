@@ -108,7 +108,7 @@ namespace CoreFrame.FileStoreServer.Controllers
                                     else
                                     {
                                         string thumbSavePath = FileStoreUtil.GenerateThumbnailSavePath(filePath, width, height);
-                                        ImageHelper.BuildThumbnail(filePath, thumbSavePath, imgFormat, width, height, false);
+                                        ImageHelper.BuildThumbnail(filePath, thumbSavePath, imgFormat, width, height, true);
                                     }
 
                                 }

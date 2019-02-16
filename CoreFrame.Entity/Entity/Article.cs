@@ -39,6 +39,11 @@ namespace CoreFrame.Entity.ArticleManage
         public int PageView { get; set; }
 
         /// <summary>
+        /// Summary
+        /// </summary>
+        public string Summary { get; set; }
+
+        /// <summary>
         /// Content
         /// </summary>
         public string Content { get; set; }
@@ -80,6 +85,10 @@ namespace CoreFrame.Entity.ArticleManage
         /// </summary>
         public int PageView { get; set; }
 
+        /// <summary>
+        /// Summary
+        /// </summary>
+        public string Summary { get; set; }
         /// <summary>
         /// Content
         /// </summary>

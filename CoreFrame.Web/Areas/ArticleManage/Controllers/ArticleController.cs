@@ -6,6 +6,7 @@ using CoreFrame.Entity;
 using CoreFrame.Entity.ArticleManage;
 using CoreFrame.Entity.AttachmentManage;
 using CoreFrame.Util;
+using CoreFrame.Web.Common;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -141,6 +142,16 @@ namespace CoreFrame.Web
 
             return Success("删除成功！");
         }
+        public ActionResult UpdateIndex()
+        {
+            List<Article> list = _articleBusiness.GetList();
+            bool result = LuceneIndexHelper.MakeIndex(list);
+            if (result)
+                return Success("更新成功！");
+            else
+                return Error("更新失败！");
+        }
+        
 
         #endregion
     }

@@ -1,0 +1,125 @@
+﻿@using CoreFrame.Entity.ArticleManage
+@model List<Article>
+@{
+    List<Article> recommendList = ViewBag.RecommendList;
+    ViewData["Title"] = "文章搜索";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="search-banner es-live-poster swiper-container">
+    <div class="swiper-slide swiper-hidden" style="background: #ffffff url(/assets/img/placeholder/banner_search.jpg?version=8.2.13) no-repeat; background-size: cover;">
+    </div>
+    <div class="cloud-search-box" style="background-color: lightgrey;">
+        <form class="input-group search-input-group" id="search-input-group" action="/home/search" method="get">
+            <div class="input-wrap">
+                <input type="text" name="keywords" class="form-control" placeholder="可搜索文章、资讯" value="@ViewBag.Keywords">
+                <i class="js-btn-clear es-icon es-icon-close01"></i>
+            </div>
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit">搜索</button>
+            </span>
+        </form>
+    </div>
+</section>
+
+<div id="content-container" class="container">
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="es-section">
+                @*<ul class="nav nav-tabs" id="search-nav-tabs" role="tablist">
+            <li class="active"><a href="/cloud/search?q=NET&amp;type=course" data-type="course">课程</a></li>
+            <li><a href="/cloud/search?q=NET&amp;type=teacher" data-type="teacher">教师</a></li>
+            <li><a href="/cloud/search?q=NET&amp;type=thread" data-type="thread">小组话题</a></li>
+            <li><a href="/cloud/search?q=NET&amp;type=article" data-type="article">资讯</a></li>
+            <li class="highlight" style="left: 0px; width: 92px;"></li>
+        </ul>*@
+                @if (Model == null || Model.Count == 0)
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">搜索结果</h3>
+                        </div>
+                        <div class="panel-body color-gray">
+                            在上方搜索框输入关键词进行搜索.
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="search-result" id="search-result">
+                        <div class="alert alert-blank alert-sm">
+                            为您找到约 <span class="color-danger">@Model.Count</span>个结果
+
+                        </div>
+                        <div class="search-course-list" id="search-course">
+                            @foreach (var item in Model)
+                            {
+                                <div class="course-item clearfix">
+
+
+                                    <div class="course-img">
+                                        <a href="/article/detail/@item.Id" target="_blank">
+                                            <img class="img-responsive" src="@CoreFrame.Util.Vars.FILESTORE_SITE@item.Cover">
+                                        </a>
+                                    </div>
+                                    <div class="course-info">
+                                        <h3 class="title">
+                                            <a href="/article/detail/@item.Id" target="_blank">
+                                                @item.Title
+                                                @*<small class="label label-primary label-xs">正在学</small>*@
+                                            </a>
+                                        </h3>
+                                        <div class="score">
+
+                                            @*<i class="es-icon es-icon-star color-warning"></i>
+                                            <i class="es-icon es-icon-star color-warning"></i>
+                                            <i class="es-icon es-icon-star color-warning"></i>
+                                            <i class="es-icon es-icon-star color-warning"></i>
+                                            <i class="es-icon es-icon-starhalf color-warning"></i>
+                                            <span>68人评价(2629)人学习</span>*@
+                                        </div>
+                                        <div class="content editor-text">
+                                            @item.Summary
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            }
+
+                        </div>
+                    </div>
+                    <nav class="text-center">
+
+                    </nav>
+                }
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default live-course-body">
+                <div class="panel-heading">
+                    <h3 class="panel-title">推荐文章</h3>
+                </div>
+                @if (recommendList != null && recommendList.Count > 0)
+                {
+                    <ul>
+                        @foreach (var item in recommendList) {
+                        <li>
+                            <a href="/article/detail/@item.Id">@item.Title</a>
+                        </li>
+                        }
+
+                    </ul>
+                }
+                else
+                {
+                    <div class="panel-body es-live-recommend">
+                        <div class="empty">暂无推荐</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

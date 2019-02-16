@@ -140,7 +140,7 @@
                     @{ List<Tag> tagList = ViewBag.TagList;
                         foreach (var item in tagList)
                         {
-                            <input type="checkbox" name="TagIdList"    value="@item.Id" @(obj.TagIdList.Contains(item.Id.ToString()) == true ? "checked=\"checked\"" : "") />
+                            <input type="checkbox" name="TagIdList" value="@item.Id" @(obj.TagIdList.Contains(item.Id.ToString()) == true ? "checked=\"checked\"" : "") />
                             <i></i><span class="text">@item.TagName</span>
                         }
                     }
@@ -176,6 +176,13 @@
                 <th>浏览数</th>
                 <td>
                     <input name="PageView" value="@obj.PageView" class="easyui-textbox" data-options="width:'200px',required:true">
+                </td>
+            </tr>
+
+            <tr>
+                <th>摘要</th>
+                <td>
+                    <input name="Summary" value="@obj.Summary" class="easyui-textbox" data-options="width:'800px',required:true">
                 </td>
             </tr>
             <tr>

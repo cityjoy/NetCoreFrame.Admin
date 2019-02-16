@@ -21,15 +21,18 @@ namespace CoreFrame.BlogWeb.Controllers
              
             return View();
         }
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
             Article article = _articleBusiness.GetEntity(id);
             if (article == null)
             {
                 return NotFound();
             }
-            article.PageView = article.PageView + 1;
-            _articleBusiness.Update(article);
+            await Task.Run(()=>{
+                article.PageView = article.PageView + 1;
+                _articleBusiness.Update(article);
+            });
+            
             return View(article);
         }
     }

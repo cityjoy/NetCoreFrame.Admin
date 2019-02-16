@@ -350,11 +350,11 @@ namespace CoreFrame.Business
         /// <summary>
         /// 获取分页后的数据
         /// </summary>
-        /// <typeparam name="U">实体类型</typeparam>
+        /// <typeparam name="T">实体类型</typeparam>
         /// <param name="query">数据源IQueryable</param>
         /// <param name="pagination">分页参数</param>
         /// <returns></returns>
-        public virtual List<U> GetPagination<U>(IQueryable<U> query, Pagination pagination)
+        public virtual List<T> GetPagination(IQueryable<T> query, Pagination pagination)
         {
             return query.GetPagination(pagination).ToList();
         }
@@ -362,7 +362,7 @@ namespace CoreFrame.Business
         /// <summary>
         /// 获取分页后的数据
         /// </summary>
-        /// <typeparam name="U">实体参数</typeparam>
+        /// <typeparam name="T">实体参数</typeparam>
         /// <param name="query">IQueryable数据源</param>
         /// <param name="pageIndex">当前页</param>
         /// <param name="pageRows">每页行数</param>
@@ -371,7 +371,7 @@ namespace CoreFrame.Business
         /// <param name="count">总记录数</param>
         /// <param name="pages">总页数</param>
         /// <returns></returns>
-        public virtual List<U> GetPagination<U>(IQueryable<U> query, int pageIndex, int pageRows, string orderColumn, string orderType, ref int count, ref int pages)
+        public virtual List<T> GetPagination(IQueryable<T> query, int pageIndex, int pageRows, string orderColumn, string orderType, ref int count, ref int pages)
         {
             Pagination pagination = new Pagination
             {
@@ -384,6 +384,24 @@ namespace CoreFrame.Business
             pages = pagination.total;
 
             return query.GetPagination(pagination).ToList();
+        }
+        /// <summary>
+        /// 根据查询字段的id列表获取数据
+        /// </summary>
+        /// <param name="fields">查询的字段</param>
+        /// <param name="key">查询的关键字</param>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public virtual List<T>  GetDataListByIds(List<string> fields,string key, List<int> ids)
+        {
+            if (ids.Count == 0)
+            {
+                return null;
+            
+            }
+            string sqlStr = string.Format("select {0} from {1} where {2} in ({3})", StringHelper.Join<string>(fields), typeof(T).Name, key, StringHelper.Join<int>(ids));
+
+            return GetListBySql(sqlStr);
         }
 
         /// <summary>
@@ -413,9 +431,9 @@ namespace CoreFrame.Business
         /// <typeparam name="T">实体类型</typeparam>
         /// <param name="sqlStr">sql语句</param>
         /// <returns></returns>
-        public virtual List<U> GetListBySql<U>(string sqlStr) where U : class, new()
+        public virtual List<T> GetListBySql(string sqlStr)
         {
-            return Repository.GetListBySql<U>(sqlStr);
+            return Repository.GetListBySql<T>(sqlStr);
         }
 
         /// <summary>
@@ -425,9 +443,9 @@ namespace CoreFrame.Business
         /// <param name="sqlStr">sql语句</param>
         /// <param name="param">参数</param>
         /// <returns></returns>
-        public virtual List<U> GetListBySql<U>(string sqlStr, List<DbParameter> param) where U : class, new()
+        public virtual List<T> GetListBySql(string sqlStr, List<DbParameter> param) 
         {
-            return Repository.GetListBySql<U>(sqlStr, param);
+            return Repository.GetListBySql<T>(sqlStr, param);
         }
 
         #endregion

@@ -7405,11 +7405,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\NetCoreFrame.Admin\\CoreFrame.IdentityServer4.DapperExtension\\IdentityServer4.DapperExtension.csproj",
+      "projectUniqueName": "F:\\MyProject\\NetCoreFrame.Admin\\CoreFrame.IdentityServer4.DapperExtension\\IdentityServer4.DapperExtension.csproj",
       "projectName": "IdentityServer4.DapperExtension",
-      "projectPath": "F:\\NetCoreFrame.Admin\\CoreFrame.IdentityServer4.DapperExtension\\IdentityServer4.DapperExtension.csproj",
+      "projectPath": "F:\\MyProject\\NetCoreFrame.Admin\\CoreFrame.IdentityServer4.DapperExtension\\IdentityServer4.DapperExtension.csproj",
       "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "F:\\NetCoreFrame.Admin\\CoreFrame.IdentityServer4.DapperExtension\\obj\\",
+      "outputPath": "F:\\MyProject\\NetCoreFrame.Admin\\CoreFrame.IdentityServer4.DapperExtension\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

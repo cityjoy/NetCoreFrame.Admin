@@ -1,0 +1,34 @@
+
+.hestia-title, .page-header.header-small .title {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 53.2px;
+    line-height: 79.8px;
+}
+
+.main-raised {
+    margin: 150px 200px 50px;
+    padding: 10px 150px 150px;
+    border-radius: 6px 6px 0 0;
+    -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.main {
+    position: relative;
+    background: #fff;
+}
+
+.blog-post {
+    word-wrap: break-word;
+    line-height: 25.2px;
+}
+
+.container {
+    max-width: 100%;
+}
+
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-top: 50px;
+}

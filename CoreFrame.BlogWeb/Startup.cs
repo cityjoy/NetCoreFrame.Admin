@@ -22,6 +22,9 @@ using CoreFrame.Entity.Base_SysManage;
 using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using Hangfire;
+using CoreFrame.BlogWeb.Common;
+using Hangfire.RecurringJobExtensions;
 
 namespace CoreFrame.BlogWeb
 {
@@ -43,6 +46,14 @@ namespace CoreFrame.BlogWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            var hangfireConnStr = Configuration["ConnectionStrings:BaseDb"];
+            //services.AddHangfire(configuration => configuration.UseSqlServerStorage(hangfireConnStr));
+            services.AddHangfire(x =>
+            {
+                x.UseSqlServerStorage(hangfireConnStr);//配置自动作业-Hangfire
+                x.UseRecurringJob(typeof(RecurringJobService));
+                x.UseDefaultActivator();
+            });
             services.AddHttpClient();
             //解决中文被编码
             services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
@@ -71,6 +82,8 @@ namespace CoreFrame.BlogWeb
             app.UseDeveloperExceptionPage();
             app.UseExceptionHandler("/Error/Show");
             app.UseStaticFiles();
+            app.UseHangfireServer();
+            app.UseHangfireDashboard(); //配置Hangfire管理员后台
             app.UseMvc(routes =>
             {
                 //默认路由

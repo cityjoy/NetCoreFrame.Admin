@@ -22,11 +22,12 @@
     </div>
     @if (manage)
     {
-        <div class="search_item">
-            <a id="add" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
-            <a id="edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
-            <a id="delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
-        </div>
+    <div class="search_item">
+        <a id="add" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
+        <a id="edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
+        <a id="delete" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+        <a id="updateIndex" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">更新索引</a>
+    </div>
     }
 </div>     
     }
@@ -120,6 +121,21 @@
                         $('#dataTable').datagrid('clearSelections').datagrid('clearChecked');
                         $('#dataTable').datagrid('reload');
                         dialogMsg('删除成功!');
+                    }
+                    else {
+                        dialogError(resJson.Msg);
+                    }
+                });
+            });
+        });
+
+        //更新索引
+        $('#updateIndex').click(function () {
+            
+            dialogComfirm('确认更新索引吗？', function () {
+                $.postJSON(rootUrl + 'ArticleManage/Article/UpdateIndex',null, function (resJson) {
+                    if (resJson.Success) {
+                        dialogMsg(resJson.Msg);
                     }
                     else {
                         dialogError(resJson.Msg);

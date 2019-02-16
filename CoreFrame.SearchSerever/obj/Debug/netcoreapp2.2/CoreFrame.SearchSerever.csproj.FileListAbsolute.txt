@@ -1,0 +1,14 @@
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\bin\Debug\netcoreapp2.2\CoreFrame.SearchSerever.deps.json
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\bin\Debug\netcoreapp2.2\CoreFrame.SearchSerever.runtimeconfig.json
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\bin\Debug\netcoreapp2.2\CoreFrame.SearchSerever.runtimeconfig.dev.json
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\bin\Debug\netcoreapp2.2\CoreFrame.SearchSerever.dll
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\obj\Debug\netcoreapp2.2\CoreFrame.SearchSerever.csprojAssemblyReference.cache
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\obj\Debug\netcoreapp2.2\CoreFrame.SearchSerever.csproj.CoreCompileInputs.cache
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\obj\Debug\netcoreapp2.2\CoreFrame.SearchSerever.RazorAssemblyInfo.cache
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\obj\Debug\netcoreapp2.2\CoreFrame.SearchSerever.RazorAssemblyInfo.cs
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\obj\Debug\netcoreapp2.2\CoreFrame.SearchSerever.AssemblyInfoInputs.cache
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\obj\Debug\netcoreapp2.2\CoreFrame.SearchSerever.AssemblyInfo.cs
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\obj\Debug\netcoreapp2.2\CoreFrame.SearchSerever.RazorTargetAssemblyInfo.cache
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\bin\Debug\netcoreapp2.2\CoreFrame.SearchSerever.pdb
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\obj\Debug\netcoreapp2.2\CoreFrame.SearchSerever.dll
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.SearchSerever\obj\Debug\netcoreapp2.2\CoreFrame.SearchSerever.pdb
