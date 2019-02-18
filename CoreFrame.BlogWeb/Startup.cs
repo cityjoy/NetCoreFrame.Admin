@@ -25,6 +25,7 @@ using System.Text.Unicode;
 using Hangfire;
 using CoreFrame.BlogWeb.Common;
 using Hangfire.RecurringJobExtensions;
+using Sakura.AspNetCore.Mvc;
 
 namespace CoreFrame.BlogWeb
 {
@@ -51,8 +52,13 @@ namespace CoreFrame.BlogWeb
             services.AddHangfire(x =>
             {
                 x.UseSqlServerStorage(hangfireConnStr);//配置自动作业-Hangfire
-                x.UseRecurringJob(typeof(RecurringJobService));
+                x.UseRecurringJob(typeof(RecurringJobService));//配置执行任务计划
                 x.UseDefaultActivator();
+            });
+            services.AddBootstrapPagerGenerator(options =>
+            {
+                // 配置分页
+                options.ConfigureDefault();
             });
             services.AddHttpClient();
             //解决中文被编码

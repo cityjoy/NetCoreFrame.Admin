@@ -1,9 +1,12 @@
 ﻿@using CoreFrame.Entity;
 @using CoreFrame.Util;
 @using CoreFrame.Entity.ArticleManage;
-@model List<Article>
+@model Sakura.AspNetCore.IPagedList<Article>
+@addTagHelper *, Sakura.AspNetCore.Mvc.PagedList
 @{
     ViewBag.Title = "首页- codegloble";
+    int pageIndex = ViewBag.PageIndex;
+    int totalPage = ViewBag.TotalPage;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -40,15 +43,15 @@
                     }
                 }
 
-                <a href="javascript:;" class="btn btn-default  active js-course-filter" data-url="/course/search?categoryId=0&amp;orderBy=latest" data-type="course">
-                    最新
-                </a>
-                <a href="javascript:;" class="btn btn-default js-course-filter" data-url="/course/search?categoryId=0&amp;orderBy=studentNum" data-type="course">
-                    最热
-                </a>
-                <a href="javascript:;" class="btn btn-default js-course-filter" data-url="/course/search?categoryId=0&amp;orderBy=recommendedSeq" data-type="course">
-                    推荐
-                </a>
+                @*<a href="javascript:;" class="btn btn-default  active js-course-filter" data-url="/course/search?categoryId=0&amp;orderBy=latest" data-type="course">
+                        最新
+                    </a>
+                    <a href="javascript:;" class="btn btn-default js-course-filter" data-url="/course/search?categoryId=0&amp;orderBy=studentNum" data-type="course">
+                        最热
+                    </a>
+                    <a href="javascript:;" class="btn btn-default js-course-filter" data-url="/course/search?categoryId=0&amp;orderBy=recommendedSeq" data-type="course">
+                        推荐
+                    </a>*@
             </div>
         </div>
         <div class="course-list">
@@ -81,103 +84,13 @@
                 }
 
             </div>
-
-            @*<div class="row">
-
-                    <div class="col-lg-3 col-md-4 col-xs-6">
-                        <div class="course-item">
-                            <div class="course-img">
-                                <a href="@Vars.MAIN_SITE/course/5" target="_blank">
-                                    <span class="tags"><span class="tag-serialing"></span></span>
-                                    <img src="~/images//17344226e78c727999.png" alt="ASP.NET Core分布式项目实战" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="course-info">
-                                <div class="title">
-                                    <a class="link-dark" href="@Vars.MAIN_SITE/course/1" target="_blank">
-                                        ASP.NET Core分布式项目实战
-                                    </a>
-                                </div>
-                                <div class="metas clearfix">
-                                    <span class="num"><i class="es-icon es-icon-people"></i>1841</span>
-                                    <span class="comment"><i class="es-icon es-icon-textsms"></i>54</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-xs-6">
-                        <div class="course-item">
-                            <div class="course-img">
-                                <a href="@Vars.MAIN_SITE/course/4" target="_blank">
-                                    <span class="tags"><span class="tag-finished"></span></span>
-                                    <img src="~/images//203628c45c4c952104.jpg" alt="ASP.NET Core快速入门" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="course-info">
-                                <div class="title">
-                                    <a class="link-dark" href="@Vars.MAIN_SITE/course/2" target="_blank">
-                                        ASP.NET Core快速入门
-                                    </a>
-                                </div>
-                                <div class="metas clearfix">
-                                    <span class="num"><i class="es-icon es-icon-people"></i>2501</span>
-                                    <span class="comment"><i class="es-icon es-icon-textsms"></i>63</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-xs-6">
-                        <div class="course-item">
-                            <div class="course-img">
-                                <a href="@Vars.MAIN_SITE/course/4" target="_blank">
-                                    <span class="tags"><span class="tag-finished"></span></span>
-                                    <img src="~/images//20180318090250.jpg" alt="Asp.Net Core API网关Ocelot" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="course-info">
-                                <div class="title">
-                                    <a class="link-dark" href="@Vars.MAIN_SITE/course/2" target="_blank">
-                                        Asp.Net Core API网关Ocelot
-                                    </a>
-                                </div>
-                                <div class="metas clearfix">
-                                    <span class="num"><i class="es-icon es-icon-people"></i>2400</span>
-                                    <span class="comment"><i class="es-icon es-icon-textsms"></i>76</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-xs-6">
-                        <div class="course-item">
-                            <div class="course-img">
-                                <a href="@Vars.MAIN_SITE/course/4" target="_blank">
-                                    <span class="tags"><span class="tag-finished"></span></span>
-                                    <img src="~/images//130841970d8e898492.jpg" alt="ASP.NET Core微服务之基于Consul实现服务治理" class="img-responsive">
-                                </a>
-                            </div>
-                            <div class="course-info">
-                                <div class="title">
-                                    <a class="link-dark" href="@Vars.MAIN_SITE/course/2" target="_blank">
-                                        ASP.NET Core微服务之基于Consul实现服务治理
-                                    </a>
-                                </div>
-                                <div class="metas clearfix">
-                                    <span class="num"><i class="es-icon es-icon-people"></i>2901</span>
-                                    <span class="comment"><i class="es-icon es-icon-textsms"></i>123</span>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
         </div>
-        <div class="section-more-btn">
+        <pager current-page="@pageIndex" total-page="@totalPage" />
+        
+        @*<div class="section-more-btn">
             <a href="@Vars.MAIN_SITE/course/explore" class="btn btn-default btn-lg">
                 更多文章 <i class="mrs-o es-icon es-icon-chevronright"></i>
             </a>
-        </div>
+        </div>*@
     </div>
 </section>

@@ -128,7 +128,7 @@ namespace CoreFrame.BlogWeb.Common
             {
                 var indexDir = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "lucene");
 
-                var VERSION = Lucene.Net.Util.LuceneVersion.LUCENE_48;
+                //var VERSION = Lucene.Net.Util.LuceneVersion.LUCENE_48;
 
                 if (System.IO.Directory.Exists(indexDir) == true)
                 {

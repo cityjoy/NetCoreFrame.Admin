@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using CoreFrame.BlogWeb.Models;
 using CoreFrame.Business;
 using CoreFrame.Entity.ArticleManage;
 using CoreFrame.Business.AttachmentManage;
 using CoreFrame.Business.ArticleManage;
 using CoreFrame.Entity;
 using CoreFrame.BlogWeb.Common;
+using Sakura.AspNetCore;
+using System;
 
 namespace CoreFrame.BlogWeb.Controllers
 {
     public class HomeController : Controller
     {
-         IAttachmentBusiness _attachmentBusiness;
-         IArticleBusiness _articleBusiness;
-         ITagBusiness _tagBusiness;
+        IAttachmentBusiness _attachmentBusiness;
+        IArticleBusiness _articleBusiness;
+        ITagBusiness _tagBusiness;
 
         public HomeController(IArticleBusiness dev_ArticleBusiness, IAttachmentBusiness dev_attachmentBusiness, ITagBusiness tagBusiness)
         {
@@ -26,12 +24,17 @@ namespace CoreFrame.BlogWeb.Controllers
             _attachmentBusiness = dev_attachmentBusiness;
             _tagBusiness = tagBusiness;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
+            int pageSize = 10;
             List<Tag> tagList = _tagBusiness.GetList();
-            List<Article> articleList = _articleBusiness.GetIQueryableList(m => m.IsPublish == true).Take(10).ToList();
+            int count = _articleBusiness.GetIQueryableList(m => m.IsPublish == true).Count();
+            List<Article> articleList = _articleBusiness.GetIQueryableList(m => m.IsPublish == true).Take((page) * pageSize).ToList();
+            var pagedData = articleList.ToPagedList(pageSize, page);
             ViewBag.TagList = tagList;
-            return View(articleList);
+            ViewBag.PageIndex = page;
+            ViewBag.TotalPage = (int)Math.Ceiling(count / (decimal)pageSize);
+            return View(pagedData);
         }
 
 

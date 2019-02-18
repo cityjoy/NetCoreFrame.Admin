@@ -13,7 +13,7 @@ namespace CoreFrame.BlogWeb.Common
 {
 
           IArticleBusiness _articleBusiness =new ArticleBusiness() ;
-
+        #region 使用特性标识要执行的任务计划
         //[RecurringJob("*/1 * * * *")]
         //[Queue("jobs")]
         //public void TestJob1(PerformContext context)
@@ -43,5 +43,6 @@ namespace CoreFrame.BlogWeb.Common
         //{
         //    context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} StaticTestJob Running ...");
         //}
+        #endregion
     }
 }
