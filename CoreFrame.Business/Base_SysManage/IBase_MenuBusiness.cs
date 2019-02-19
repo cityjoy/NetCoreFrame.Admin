@@ -8,7 +8,7 @@ using System.Linq.Dynamic.Core;
 
 namespace CoreFrame.Business.Base_SysManage
 {
-    public interface IBase_MenuBusiness : IRepository<Menu>
+    public interface IBase_MenuBusiness : IBusiness<Menu>
     {
         #region 外部接口
      

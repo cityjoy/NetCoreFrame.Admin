@@ -11,6 +11,7 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CoreFrame.Business
 {
@@ -19,7 +20,7 @@ namespace CoreFrame.Business
     /// 作者：CoreFrame
     /// </summary>
     /// <typeparam name="T">泛型约束（数据库实体）</typeparam>
-    public class BaseBusiness<T> : IRepository<T> where T : class, new()
+    public class BaseBusiness<T> : IBusiness<T> where T : class, new()
     {
         #region 构造函数
 
@@ -312,7 +313,19 @@ namespace CoreFrame.Business
         {
             return Repository.GetList<T>();
         }
-
+        /// <summary>
+        ///获取分页数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="total"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public IQueryable<T> GetPageList(int pageSize, int pageIndex, out int total, Expression<Func<T, bool>> predicate)
+        {
+            return Repository.GetPageList<T>(pageSize, pageIndex, out total, predicate);
+        }
         /// <summary>
         /// 获取实体对应的表，延迟加载，主要用于支持Linq查询操作
         /// </summary>
@@ -598,6 +611,55 @@ namespace CoreFrame.Business
             SQLLogHelper.HandleException(ex);
         }
 
+        #endregion
+
+
+        #region 异步方法
+        #region 查询数据
+        /// <summary>
+        /// 获取实体
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        public async  Task<T> GetEntityAsync(params object[] keyValue)
+        {
+            return await Repository.GetEntityAsync<T>(keyValue);
+        }
+        
+        /// <summary>
+        /// 获取表的所有数据，当数据量很大时不要使用！
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <returns></returns>
+        public async Task<List<T>> GetListAsync() 
+        {
+            return await Repository.GetListAsync<T>();
+        }
+
+        /// <summary>
+        /// 通过Lamda表达式获取实体列表
+        /// </summary>
+        /// <param name="predicate">Lamda表达式（p=>p.Id==Id）</param>
+        /// <returns></returns>
+        public async Task<List<T>> GetListAsync(Expression<Func<T, bool>> predicate = null) 
+        {
+
+            return await Repository.GetListAsync<T>(predicate);
+
+        }
+
+        /// <summary>
+        /// 通过Lamda表达式获取实体列表
+        /// </summary>
+        /// <param name="predicate">Lamda表达式（p=>p.Id==Id）</param>
+        /// <returns></returns>
+        public async Task<List<T>> GetListAsync(Expression<Func<T, bool>> predicate, int count, Expression<Func<T, object>> orderKey, bool asc)
+        {
+
+            return await Repository.GetListAsync<T>(predicate,count,orderKey,asc);
+        }
+        #endregion
         #endregion
     }
 }

@@ -14,3 +14,12 @@ F:\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcor
 F:\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.AssemblyInfo.cs
 F:\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.dll
 F:\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.pdb
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\bin\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.deps.json
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\bin\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.dll
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\bin\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.pdb
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.csprojAssemblyReference.cache
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.csproj.CoreCompileInputs.cache
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.AssemblyInfoInputs.cache
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.AssemblyInfo.cs
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.dll
+F:\MyProject\NetCoreFrame.Admin\CoreFrame.IdentityServer4.DapperExtension\obj\Debug\netcoreapp2.1\IdentityServer4.DapperExtension.pdb

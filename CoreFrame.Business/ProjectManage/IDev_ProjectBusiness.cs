@@ -8,7 +8,7 @@ using System.Linq.Dynamic.Core;
 
 namespace CoreFrame.Business.ProjectManage
 {
-    public interface IDev_ProjectBusiness : IRepository<Dev_Project>
+    public interface IDev_ProjectBusiness : IBusiness<Dev_Project>
     {
         #region 外部接口
      

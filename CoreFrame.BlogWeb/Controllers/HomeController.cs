@@ -9,6 +9,8 @@ using CoreFrame.Entity;
 using CoreFrame.BlogWeb.Common;
 using Sakura.AspNetCore;
 using System;
+using System.Threading.Tasks;
+using CoreFrame.BlogWeb.Models;
 
 namespace CoreFrame.BlogWeb.Controllers
 {
@@ -26,15 +28,19 @@ namespace CoreFrame.BlogWeb.Controllers
         }
         public IActionResult Index(int page = 1)
         {
-            int pageSize = 10;
+            int pageSize = 8;
+            int count = 0;
             List<Tag> tagList = _tagBusiness.GetList();
-            int count = _articleBusiness.GetIQueryableList(m => m.IsPublish == true).Count();
-            List<Article> articleList = _articleBusiness.GetIQueryableList(m => m.IsPublish == true).Take((page) * pageSize).ToList();
-            var pagedData = articleList.ToPagedList(pageSize, page);
+            var dataList = _articleBusiness.GetPageList(pageSize, page, out count, m => m.IsPublish == true);
+            List<ArticleListModel> articleList =
+                 dataList
+                .OrderByDescending(m=>m.CreateTime)
+                .Select(m => new ArticleListModel { Id = m.Id, Title = m.Title, Cover = m.Cover, PageView = m.PageView })
+                .ToList();
             ViewBag.TagList = tagList;
             ViewBag.PageIndex = page;
             ViewBag.TotalPage = (int)Math.Ceiling(count / (decimal)pageSize);
-            return View(pagedData);
+            return View(articleList);
         }
 
 
@@ -48,21 +54,27 @@ namespace CoreFrame.BlogWeb.Controllers
             return View();
         }
 
-        public IActionResult Search(string keywords)
+        public async Task<IActionResult> Search(string keywords,int page=1)
         {
-            List<Article> alist = null;
+            int count = 0;
+            int pageSize = 4;
+            List<Article> list = null;
             List<Article> recommendList = null;
-            recommendList = _articleBusiness.GetIQueryableList(m => m.PageView > 50).Take(10).ToList();
+            //recommendList = _articleBusiness.GetIQueryableList(m => m.PageView > 50).Take(10).OrderByDescending(m=>m.CreateTime).ToList(); 
+            recommendList = await _articleBusiness.GetListAsync(m => m.PageView > 50, 10, m => m.CreateTime, false); 
 
             if (!string.IsNullOrWhiteSpace(keywords))
             {
-                List<int> ids = LuceneIndexHelper.Search(keywords);
+                List<int> ids = LuceneIndexHelper.Search(keywords, page, pageSize, out count);
                 List<string> fields = new List<string>() { "Id", "Title", "Summary", "Cover" };
-                alist = _articleBusiness.GetDataListByIds(fields, "id", ids);
+                list = _articleBusiness.GetDataListByIds(fields, "id", ids);
             }
             ViewBag.Keywords = keywords;
             ViewBag.RecommendList = recommendList;
-            return View(alist);
+            ViewBag.Count = count;
+            ViewBag.PageIndex = page;
+            ViewBag.TotalPage = (int)Math.Ceiling(count / (decimal)pageSize);
+            return View(list);
 
         }
 

@@ -10,6 +10,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace CoreFrame.DataRepository
 {
@@ -419,7 +420,7 @@ namespace CoreFrame.DataRepository
 
             Commit();
         }
-
+       
         /// <summary>
         /// 更新一条数据,某些属性
         /// </summary>
@@ -493,6 +494,28 @@ namespace CoreFrame.DataRepository
         {
             return Db.Set<T>().AsNoTracking().ToList();
         }
+        /// <summary>
+        ///获取分页数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="total"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public IQueryable<T> GetPageList<T>(int pageSize, int pageIndex, out int total, Expression<Func<T, bool>> predicate) where T : class, new()
+        {
+            IQueryable<T> result = null;
+            //total = Entities.Where(predicate).Count();
+                total = Db.Set<T>().Where(predicate).Count();
+                var temp = Db.Set<T>().AsNoTracking()
+                        .Where(predicate)
+                        .Skip(pageSize * (pageIndex - 1))
+                        .Take(pageSize);
+                result = temp;
+                return result;
+           
+        }
 
         /// <summary>
         /// 获取实体对应的表，延迟加载，主要用于支持Linq查询操作
@@ -517,7 +540,7 @@ namespace CoreFrame.DataRepository
             {
                 return Db.Set<T>().AsNoTracking().Where(predicate).AsQueryable();
             }
-            return Db.Set<T>().AsNoTracking().AsQueryable();
+            return Db.Set<T>().AsNoTracking();
         }
 
 
@@ -664,6 +687,68 @@ namespace CoreFrame.DataRepository
             return result;
         }
 
+        #endregion
+
+        #region 异步方法
+        #region 查询数据
+
+        /// <summary>
+        /// 获取实体
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="keyValue">主键</param>
+        /// <returns></returns>
+        public async Task<T> GetEntityAsync<T>(params object[] keyValue) where T : class, new()
+        {
+            return await Db.Set<T>().FindAsync(keyValue);
+        }
+
+        /// <summary>
+        /// 获取表的所有数据，当数据量很大时不要使用！
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <returns></returns>
+        public async Task<List<T>> GetListAsync<T>() where T : class, new()
+        {
+            return await Db.Set<T>().AsNoTracking().ToListAsync();
+        }
+
+        /// <summary>
+        /// 通过Lamda表达式获取实体列表
+        /// </summary>
+        /// <param name="predicate">Lamda表达式（p=>p.Id==Id）</param>
+        /// <returns></returns>
+        public async Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>> predicate = null) where T : class, new()
+        {
+
+            if (predicate != null)
+            {
+                return await  Db.Set<T>().AsNoTracking().Where(predicate).ToListAsync();
+            }
+            return await Db.Set<T>().AsNoTracking().ToListAsync();
+        }
+
+        /// <summary>
+        /// 通过Lamda表达式获取实体列表
+        /// </summary>
+        /// <param name="predicate">Lamda表达式（p=>p.Id==Id）</param>
+        /// <returns></returns>
+        public async Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>> predicate ,int count, Expression<Func<T, object>> orderKey,bool asc) where T : class, new()
+        {
+
+            if (predicate != null)
+            {
+                if(asc)
+                return await Db.Set<T>().AsNoTracking().Where(predicate).Take(count).OrderBy(orderKey).ToListAsync();
+                else
+                return await Db.Set<T>().AsNoTracking().Where(predicate).Take(count).OrderByDescending(orderKey).ToListAsync();
+
+            }
+            return await Db.Set<T>().AsNoTracking().ToListAsync();
+        }
+
+
+        #endregion
         #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace CoreFrame.BlogWeb.Common
     public class RecurringJobService
 {
 
-          IArticleBusiness _articleBusiness =new ArticleBusiness() ;
+          IArticleBusiness _articleBusiness = new ArticleBusiness() ;
         #region 使用特性标识要执行的任务计划
         //[RecurringJob("*/1 * * * *")]
         //[Queue("jobs")]
@@ -29,7 +29,7 @@ namespace CoreFrame.BlogWeb.Common
         [RecurringJob("*/59 * * * *", RecurringJobId = "MakeIndex")]
         public void MakeIndex(PerformContext context)
         {
-            List<Article> list = _articleBusiness.GetList();
+            List<ArticleIndex> list = _articleBusiness.GetIQueryable().Select(m => new ArticleIndex { Id = m.Id, Title = m.Title, Summary = m.Summary, CreateTime = m.CreateTime }).ToList();
             bool result = LuceneIndexHelper.MakeIndex(list);
         }
         //[RecurringJob("*/5 * * * *", "jobs")]

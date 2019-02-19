@@ -17,7 +17,13 @@ using System.Threading.Tasks;
 
 namespace CoreFrame.Web.Common
 {
-
+    public class ArticleIndex
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Summary { get; set; }
+        public object CreateTime { get; internal set; }
+    }
     public class LuceneIndexHelper
     {
 
@@ -48,7 +54,7 @@ namespace CoreFrame.Web.Common
             return ret;
         }
         #endregion
-        public static bool MakeIndex(List<Article> articleList)
+        public static bool MakeIndex(List<ArticleIndex> articleList)
         {
             bool retult = false;
             try

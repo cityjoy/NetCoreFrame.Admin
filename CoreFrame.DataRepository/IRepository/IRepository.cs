@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CoreFrame.DataRepository
 {
@@ -66,7 +67,7 @@ namespace CoreFrame.DataRepository
         List<T> GetList<T>() where T : class, new();
         IQueryable<T> GetIQueryable<T>() where T : class, new();
         IQueryable<T> GetIQueryableList<T>(Expression<Func<T, bool>> predicate = null) where T : class, new();
-
+        IQueryable<T> GetPageList<T>(int pageSize, int pageIndex, out int total, Expression<Func<T, bool>> predicate) where T : class, new();
         DataTable GetDataTableWithSql(string sql);
         DataTable GetDataTableWithSql(string sql, List<DbParameter> parameters);
         List<T> GetListBySql<T>(string sqlStr) where T : class, new();
@@ -79,6 +80,25 @@ namespace CoreFrame.DataRepository
         int ExecuteSql(string sql);
         int ExecuteSql(string sql, List<DbParameter> parameters);
 
+        #endregion
+
+        #region 异步方法
+        #region 查询数据
+
+        Task<T> GetEntityAsync<T>(params object[] keyValue) where T : class, new();
+        Task<List<T>> GetListAsync<T>() where T : class, new();
+        Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>> predicate) where T : class, new();
+        Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>> predicate, int count, Expression<Func<T, object>> orderKey, bool asc) where T : class, new();
+        //Task<IQueryable<T>> GetIQueryableAsync();
+        //Task<IQueryable<T>> GetIQueryableListAsync(Expression<Func<T, bool>> predicate);
+        //Task<List<T>> GetDataListAsync(string condition, string keyword, Pagination pagination);
+        //Task<List<T>> GetDataListByIdsAsync(List<string> fields, string key, List<int> ids);
+        //Task<DataTable> GetDataTableWithSqlAsync(string sql);
+        //Task<DataTable> GetDataTableWithSqlAsync(string sql, List<DbParameter> parameters);
+        //Task<List<T>> GetListBySqlAsync(string sqlStr);
+        //Task<List<T>> GetListBySqlAsync(string sqlStr, List<DbParameter> param);
+
+        #endregion
         #endregion
     }
 }

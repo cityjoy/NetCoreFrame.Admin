@@ -8,7 +8,7 @@ using System.Linq.Dynamic.Core;
 
 namespace CoreFrame.Business.ArticleManage
 {
-    public interface IArticleBusiness : IRepository<Article>
+    public interface IArticleBusiness : IBusiness<Article>
     {
         #region 外部接口
      

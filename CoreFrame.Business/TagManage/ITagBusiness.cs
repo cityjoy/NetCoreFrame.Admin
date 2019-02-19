@@ -8,7 +8,7 @@ using System.Linq.Dynamic.Core;
 
 namespace CoreFrame.Business
 {
-    public interface ITagBusiness : IRepository<Tag>
+    public interface ITagBusiness : IBusiness<Tag>
     {
         #region 外部接口
      

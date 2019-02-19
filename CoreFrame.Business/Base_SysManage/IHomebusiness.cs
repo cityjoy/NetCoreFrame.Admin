@@ -4,7 +4,7 @@ using CoreFrame.Util;
 
 namespace CoreFrame.Business.Base_SysManage
 {
-    public interface IHomebusiness: IRepository<Base_User>
+    public interface IHomebusiness: IBusiness<Base_User>
     {
         AjaxResult SubmitLogin(string userName, string password);
     }

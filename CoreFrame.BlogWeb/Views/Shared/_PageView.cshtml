@@ -1,0 +1,10 @@
+﻿@addTagHelper *, Sakura.AspNetCore.Mvc.PagedList
+
+@{
+    int pageIndex = ViewBag.PageIndex;
+    int totalPage = ViewBag.TotalPage;
+}
+
+<nav class="text-center">
+    <pager current-page="@pageIndex" total-page="@totalPage" />
+</nav>

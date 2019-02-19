@@ -4,6 +4,11 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
@@ -23,6 +28,12 @@
     <ProjectReference Include="..\CoreFrame.Business\04.CoreFrame.Business.csproj" />
     <ProjectReference Include="..\CoreFrame.Entity\03.CoreFrame.Entity.csproj" />
     <ProjectReference Include="..\CoreFrame.Util\01.CoreFrame.Util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="stopwords.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

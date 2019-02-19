@@ -3,6 +3,7 @@ using CoreFrame.Entity;
 using CoreFrame.Util;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 
 namespace CoreFrame.Web
 {
@@ -45,7 +46,7 @@ namespace CoreFrame.Web
         /// <returns></returns>
         public ActionResult GetDataList(string condition, string keyword, Pagination pagination)
         {
-            var dataList = _tagBusiness.GetDataList(condition, keyword, pagination);
+            var dataList = _tagBusiness.GetDataList(condition, keyword, pagination).Select(m => new { m.Id, m.TagName }).ToList(); ;
 
             return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
         }

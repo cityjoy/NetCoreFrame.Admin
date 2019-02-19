@@ -9,7 +9,7 @@ using System.Linq.Dynamic.Core;
 
 namespace CoreFrame.Business.AttachmentManage
 {
-    public interface IAttachmentBusiness : IRepository<Attachment>
+    public interface IAttachmentBusiness : IBusiness<Attachment>
     {
         #region 外部接口
         

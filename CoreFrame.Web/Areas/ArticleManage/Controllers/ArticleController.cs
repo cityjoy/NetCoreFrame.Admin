@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 namespace CoreFrame.Web
 {
     [Area("ArticleManage")]
@@ -72,7 +72,7 @@ namespace CoreFrame.Web
         /// <returns></returns>
         public ActionResult GetDataList(string condition, string keyword, Pagination pagination)
         {
-            var dataList = _articleBusiness.GetDataList(condition, keyword, pagination);
+            var dataList = _articleBusiness.GetDataList(condition, keyword, pagination).Select(m => new { m.Id, m.Title }).ToList();
 
             return Content(pagination.BuildTableResult_DataGrid(dataList).ToJson());
         }
@@ -144,7 +144,7 @@ namespace CoreFrame.Web
         }
         public ActionResult UpdateIndex()
         {
-            List<Article> list = _articleBusiness.GetList();
+            List<ArticleIndex> list = _articleBusiness.GetIQueryable().Select(m => new ArticleIndex { Id = m.Id, Title = m.Title, Summary = m.Summary, CreateTime = m.CreateTime }).ToList();
             bool result = LuceneIndexHelper.MakeIndex(list);
             if (result)
                 return Success("更新成功！");
@@ -154,5 +154,7 @@ namespace CoreFrame.Web
         
 
         #endregion
+
+        
     }
 }

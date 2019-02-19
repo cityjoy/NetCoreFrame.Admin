@@ -18,12 +18,18 @@ using System.Threading.Tasks;
 
 namespace CoreFrame.BlogWeb.Common
 {
-
+    public class ArticleIndex
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Summary { get; set; }
+        public object CreateTime { get; internal set; }
+    }
     public class LuceneIndexHelper
     {
 
 
-        public static bool MakeIndex(List<Article> articleList)
+        public static bool MakeIndex(List<ArticleIndex> articleList)
         {
             bool retult = false;
             var indexDir = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "lucene");
@@ -42,54 +48,54 @@ namespace CoreFrame.BlogWeb.Common
             {
                 //Console.WriteLine($"[{DateTime.Now}] UpdateMerchIndex job begin...");
 
-                    if (File.Exists(Path.Combine(indexDir, "segments.gen")) == true)
-                    {
-                        indexWriter.DeleteAll();
-                    }
-                    var index = 1;
-                    var size = 200;
+                if (File.Exists(Path.Combine(indexDir, "segments.gen")) == true)
+                {
+                    indexWriter.DeleteAll();
+                }
+                var index = 1;
+                var size = 200;
 
-                    var count = articleList.Count();
+                var count = articleList.Count();
 
-                    if (count > 0)
+                if (count > 0)
+                {
+                    while (true)
                     {
-                        while (true)
+                        var rs = articleList.OrderBy(t => t.CreateTime)
+                        .Skip((index - 1) * size)
+                        .Take(size).ToList();
+
+                        if (rs.Count == 0)
                         {
-                            var rs = articleList.OrderBy(t => t.CreateTime)
-                            .Skip((index - 1) * size)
-                            .Take(size).ToList();
-
-                            if (rs.Count == 0)
-                            {
-                                break;
-                            }
-
-                            var docList = new List<Document>();
-
-                            foreach (var item in rs)
-                            {
-                                var articleId = item.Id.ToString();
-
-                                var doc = new Document();
-                                var field1 = new StringField("articleId", articleId, Field.Store.YES);
-                                var field2 = new TextField("title", item.Title?.ToLower(), Field.Store.YES);
-                                var field3 = new TextField("summary", item.Summary?.ToLower(), Field.Store.YES);
-                                doc.Add(field1);
-                                doc.Add(field2);
-                                doc.Add(field3);
-                                docList.Add(doc);
-
-                            }
-
-                            if (docList.Count > 0)
-                            {
-                                indexWriter.AddDocuments(docList);
-                            }
-
-                            index = index + 1;
+                            break;
                         }
 
+                        var docList = new List<Document>();
+
+                        foreach (var item in rs)
+                        {
+                            var articleId = item.Id.ToString();
+
+                            var doc = new Document();
+                            var field1 = new StringField("articleId", articleId, Field.Store.YES);
+                            var field2 = new TextField("title", item.Title?.ToLower(), Field.Store.YES);
+                            var field3 = new TextField("summary", item.Summary?.ToLower(), Field.Store.YES);
+                            doc.Add(field1);
+                            doc.Add(field2);
+                            doc.Add(field3);
+                            docList.Add(doc);
+
+                        }
+
+                        if (docList.Count > 0)
+                        {
+                            indexWriter.AddDocuments(docList);
+                        }
+
+                        index = index + 1;
                     }
+
+                }
 
                 if (!indexWriter.IsClosed)
                 {
@@ -114,8 +120,9 @@ namespace CoreFrame.BlogWeb.Common
 
         }
 
-        public static List<int> Search(string key)
+        public static List<int> Search(string key, int page, int pageSize, out int totalHits)
         {
+            totalHits = 0;
             if (string.IsNullOrEmpty(key))
             {
                 return null;
@@ -153,8 +160,8 @@ namespace CoreFrame.BlogWeb.Common
 
                     var collector = TopScoreDocCollector.Create(1000, true);
                     search2.Search(booleanQuery, null, collector);
-                    var docs = collector.GetTopDocs(0, collector.TotalHits).ScoreDocs;
-
+                    var docs = collector.GetTopDocs((page - 1) * pageSize, (page) * pageSize).ScoreDocs;
+                    totalHits = collector.TotalHits;
                     foreach (var d in docs)
                     {
                         var num = d.Doc;

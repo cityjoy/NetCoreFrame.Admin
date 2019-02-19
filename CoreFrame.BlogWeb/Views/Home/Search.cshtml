@@ -1,8 +1,11 @@
 ﻿@using CoreFrame.Entity.ArticleManage
 @model List<Article>
+@addTagHelper *, Sakura.AspNetCore.Mvc.PagedList
 @{
     List<Article> recommendList = ViewBag.RecommendList;
     ViewData["Title"] = "文章搜索";
+    int count = ViewBag.Count;
+    int pageIndex = ViewBag.PageIndex;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -28,12 +31,12 @@
         <div class="col-md-8">
             <div class="es-section">
                 @*<ul class="nav nav-tabs" id="search-nav-tabs" role="tablist">
-            <li class="active"><a href="/cloud/search?q=NET&amp;type=course" data-type="course">课程</a></li>
-            <li><a href="/cloud/search?q=NET&amp;type=teacher" data-type="teacher">教师</a></li>
-            <li><a href="/cloud/search?q=NET&amp;type=thread" data-type="thread">小组话题</a></li>
-            <li><a href="/cloud/search?q=NET&amp;type=article" data-type="article">资讯</a></li>
-            <li class="highlight" style="left: 0px; width: 92px;"></li>
-        </ul>*@
+                        <li class="active"><a href="/cloud/search?q=NET&amp;type=course" data-type="course">课程</a></li>
+                        <li><a href="/cloud/search?q=NET&amp;type=teacher" data-type="teacher">教师</a></li>
+                        <li><a href="/cloud/search?q=NET&amp;type=thread" data-type="thread">小组话题</a></li>
+                        <li><a href="/cloud/search?q=NET&amp;type=article" data-type="article">资讯</a></li>
+                        <li class="highlight" style="left: 0px; width: 92px;"></li>
+                    </ul>*@
                 @if (Model == null || Model.Count == 0)
                 {
                     <div class="panel panel-default">
@@ -49,7 +52,7 @@
                 {
                     <div class="search-result" id="search-result">
                         <div class="alert alert-blank alert-sm">
-                            为您找到约 <span class="color-danger">@Model.Count</span>个结果
+                            为您找到约 <span class="color-danger">@count</span>个结果,当前第<span class="color-danger">@pageIndex</span>页
 
                         </div>
                         <div class="search-course-list" id="search-course">
@@ -73,11 +76,11 @@
                                         <div class="score">
 
                                             @*<i class="es-icon es-icon-star color-warning"></i>
-                                            <i class="es-icon es-icon-star color-warning"></i>
-                                            <i class="es-icon es-icon-star color-warning"></i>
-                                            <i class="es-icon es-icon-star color-warning"></i>
-                                            <i class="es-icon es-icon-starhalf color-warning"></i>
-                                            <span>68人评价(2629)人学习</span>*@
+                                                <i class="es-icon es-icon-star color-warning"></i>
+                                                <i class="es-icon es-icon-star color-warning"></i>
+                                                <i class="es-icon es-icon-star color-warning"></i>
+                                                <i class="es-icon es-icon-starhalf color-warning"></i>
+                                                <span>68人评价(2629)人学习</span>*@
                                         </div>
                                         <div class="content editor-text">
                                             @item.Summary
@@ -90,9 +93,7 @@
 
                         </div>
                     </div>
-                    <nav class="text-center">
-
-                    </nav>
+                   @Html.Partial(@"~/Views/Shared/_PageView.cshtml")
                 }
             </div>
         </div>
@@ -104,10 +105,11 @@
                 @if (recommendList != null && recommendList.Count > 0)
                 {
                     <ul>
-                        @foreach (var item in recommendList) {
-                        <li>
-                            <a href="/article/detail/@item.Id">@item.Title</a>
-                        </li>
+                        @foreach (var item in recommendList)
+                        {
+                            <li>
+                                <a href="/article/detail/@item.Id">@item.Title</a>
+                            </li>
                         }
 
                     </ul>
