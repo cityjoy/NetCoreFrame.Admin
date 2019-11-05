@@ -140,7 +140,17 @@
                     @{ List<Tag> tagList = ViewBag.TagList;
                         foreach (var item in tagList)
                         {
-                            <input type="checkbox" name="TagIdList" value="@item.Id" @(obj.TagIdList.Contains(item.Id.ToString()) == true ? "checked=\"checked\"" : "") />
+                            if (obj.Id > 0)
+                            {
+                                if (obj.TagIdList != null)
+                                {
+                                <input type="checkbox" name="TagIdList" value="@item.Id" @(obj.TagIdList.Contains(item.Id.ToString()) == true ? "checked=\"checked\"" : "") />
+                                }
+                            }
+                            else
+                            {
+                            <input type="checkbox" name="TagIdList" value="@item.Id" data-options="required:true"/>
+                            }
                             <i></i><span class="text">@item.TagName</span>
                         }
                     }
